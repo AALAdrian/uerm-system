@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const express = require('express')
 const app = express();
-const encodeRoute = require('./routes/encode.js')
+const encodeRoute = require('./routes/add.js')
 
 app.listen(3000,(err) => {
     if(err){
@@ -28,7 +28,7 @@ connection.connect(function(err) {
 
   const sql = 'INSERT INTO computer (ip_address, department, property_code, cpu_model, cpu_serial_no, remarks, hostname, status) VALUES("ipaddress_sample", "department_sample", "propertycode_sample", "cpumodel_sample", "cpuserial_num_sample", "remarks_sample", "hostname_sample", "status_sample")'
   
-  app.use('/api/encode', encodeRoute)
+  app.use('/api/add', encodeRoute)
 
 
 });
