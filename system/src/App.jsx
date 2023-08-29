@@ -17,14 +17,22 @@ function App() {
   const [hostname, setHostname] = useState()
   const [ipToSearch, setIpToSearch] = useState();
   const [ipList, setIpList] = useState()
+  const [dummyIpList, setDummyIpList] = useState();
+  const [selectedOption, setSelectedOption] = useState()
   
   useEffect(() => {
     axios.get('/api/getData')
     .then(res => {
       console.log(res.data)
       setIpList(res.data)
+      setDummyIpList(res.data)
     })
   },[])
+
+  function handleSearchInputChange(e){
+    const newIpList = ipList.filter(ip => ip.ip_address.includes(e.target.value))
+    setDummyIpList(newIpList)
+  }
 
 
   function handleSubmit(){
@@ -73,15 +81,24 @@ function App() {
 
       <button onClick={handleSubmit}>submit</button>
 
-      <input type='text'></input>
+      <input type='text' value={ipToSearch} onChange={handleSearchInputChange}></input>
 
       <div className='ip-list'>
         {
-          ipList.map(ip => {
-            
-          })
+          dummyIpList?.map(ip => 
+            <div key={ip.ip_addres}>
+              <p>IP: {ip.ip_address}</p>
+            </div>
+          )
         }
       </div>
+
+      <select>
+        <option>dep1</option>
+        <option onClick={() => alert("this is the dep1")}>dep2</option>
+
+      </select>
+      <p>this is the selected in select tag {selectedOption}</p>
 
     </div>
   )
