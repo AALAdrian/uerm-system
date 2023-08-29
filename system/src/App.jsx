@@ -21,13 +21,13 @@ function App() {
   const [selectedOption, setSelectedOption] = useState()
   
   useEffect(() => {
-    axios.get(`/api/getData`)
+    axios.get(`/api/getData/${selectedOption}`)
     .then(res => {
       console.log(res.data)
       setIpList(res.data)
       setDummyIpList(res.data)
     })
-  },[])
+  },[selectedOption])
 
   function handleSearchInputChange(e){
     const newIpList = ipList.filter(ip => ip.ip_address.includes(e.target.value))
@@ -80,7 +80,8 @@ function App() {
       <input value={hostname} onChange={(e) => setHostname(e.target.value)}></input>
 
       <button onClick={handleSubmit}>submit</button>
-
+      <br></br><br></br>
+      <label>search</label>
       <input type='text' value={ipToSearch} onChange={handleSearchInputChange}></input>
 
       <div className='ip-list'>
@@ -95,8 +96,8 @@ function App() {
 
       <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
         <option value=''>please select a department</option>
-        <option value='dep1'>dep1</option>
-        <option value='dep2'>dep2</option>
+        <option value='engineering'>engineering</option>
+        <option value='it'>it</option>
 
       </select>
       <p> {selectedOption} is the selected tag</p>

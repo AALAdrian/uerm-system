@@ -3,6 +3,7 @@ const express = require('express')
 const app = express();
 const addRouter = require('./routes/add.js')
 const bodyParser = require('body-parser');
+const e = require('express');
 
 app.listen(3000,(err) => {
     if(err){
@@ -33,17 +34,28 @@ connection.connect(function(err) {
   
   app.use('/api/add', addRouter)
   app.get('/api/getData/:department?', (req, res) => {
-    
     const {department} = req.params
-    console.log(department)
+    if(req.params == null){
+
     connection.query('SELECT * FROM computer', (err, result) => {
       if(err){
         console.log(err)
         return;
       }
-      console.log(res)
+      //console.log(res)
       res.send(result)
     })
+
+  }
+  else{
+    connection.query('SELECT * FROM computer WHERE department = ?',[department], (err, result) => {
+      if(err){
+        console.log(err)
+        return
+      }
+      res.send(result)
+    })
+  }
 
   })
 
