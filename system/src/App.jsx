@@ -16,46 +16,51 @@ function App() {
   const [hostname, setHostname] = useState()
 
 
-
-
-
-
-
-
-  function handleTestButton(){
-    console.log('you are clicking the button')
-    axios.get('/api/encode').
-    then(res => {
-      console.log(res)
-    }).
-    catch(err => {
+  function handleSubmit(){
+    axios.post('/api/add', 
+    {
+      ip, department, propCode, cpuModel, serialNum, remarks, hostname
+    }
+    ).then(res => {
+      if(res.data.error){
+        console.log(res.data.error)
+      }
+      else{
+        console.log(res.data)
+      }
+    })
+    .catch(err => {
       console.log(err)
     })
   }
+
+
 
   return (
     <div className='app-container'>
 
       <label>ip</label>
-      <input></input>
+      <input value={ip} onChange={(e) => setIp(e.target.value)}></input>
 
       <label>department</label>
-      <input></input>
+      <input value={department} onChange={(e) => setDepartment(e.target.value)}></input>
 
       <label>prop code</label>
-      <input></input>
+      <input value={propCode} onChange={(e) => setPropCode(e.target.value)}></input>
 
       <label>cpu model</label>
-      <input></input>
+      <input value={cpuModel} onChange={(e) => setCpuModel(e.target.value)}></input>
 
       <label>cpu serial no</label>
-      <input></input>
+      <input value={serialNum} onChange={(e) => setSerialNum(e.target.value)}></input>
 
       <label>remarks</label>
-      <input></input>
+      <input value={remarks} onChange={(e) => setRemarks(e.target.value)}></input>
 
       <label>hostname</label>
-      <input></input>
+      <input value={hostname} onChange={(e) => setHostname(e.target.value)}></input>
+
+      <button onClick={handleSubmit}>submit</button>
 
     </div>
   )
