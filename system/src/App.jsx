@@ -84,23 +84,21 @@ function App() {
       <label>search</label>
       <input type='text' value={ipToSearch} onChange={handleSearchInputChange}></input>
 
+      <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+        <option value=''>please select a department</option>
+        <option value='engineering'>engineering</option>
+        <option value='it'>it</option>
+      </select>
+
       <div className='ip-list'>
         {
           dummyIpList?.map(ip => 
-            <div key={ip.ip_addres}>
+            <div className='ip-address' key={ip.ip_addres}>
               <p>IP: {ip.ip_address}</p>
             </div>
           )
         }
       </div>
-
-      <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-        <option value=''>please select a department</option>
-        <option value='engineering'>engineering</option>
-        <option value='it'>it</option>
-
-      </select>
-      <p> {selectedOption} is the selected tag</p>
 
     </div>
   )
