@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {BrowserRouter} from 'react-router-dom'
 import { useState } from 'react';
 import axios from 'axios';
 import './App.css'
+import mysql from 'mysql'
 
 function App() {
 
@@ -14,6 +15,16 @@ function App() {
   const [serialNum, setSerialNum] = useState();
   const [remarks, setRemarks] = useState()
   const [hostname, setHostname] = useState()
+  const [ipToSearch, setIpToSearch] = useState();
+  const [ipList, setIpList] = useState()
+  
+  useEffect(() => {
+    axios.get('/api/getData')
+    .then(res => {
+      console.log(res.data)
+      setIpList(res.data)
+    })
+  },[])
 
 
   function handleSubmit(){
@@ -61,6 +72,16 @@ function App() {
       <input value={hostname} onChange={(e) => setHostname(e.target.value)}></input>
 
       <button onClick={handleSubmit}>submit</button>
+
+      <input type='text'></input>
+
+      <div className='ip-list'>
+        {
+          ipList.map(ip => {
+            
+          })
+        }
+      </div>
 
     </div>
   )

@@ -32,6 +32,15 @@ connection.connect(function(err) {
   const sql = 'INSERT INTO computer (ip_address, department, property_code, cpu_model, cpu_serial_no, remarks, hostname, status) VALUES("ipaddress_sample", "department_sample", "propertycode_sample", "cpumodel_sample", "cpuserial_num_sample", "remarks_sample", "hostname_sample", "status_sample")'
   
   app.use('/api/add', addRouter)
-
+  app.get('/api/getData', (req, res) => {
+    connection.query('SELECT * FROM computer', (err, result) => {
+      if(err){
+        console.log(err)
+        return;
+      }
+      console.log(res)
+      res.send(result)
+    })
+  })
 
 });
