@@ -21,7 +21,7 @@ function App() {
   const [selectedOption, setSelectedOption] = useState()
   
   useEffect(() => {
-    axios.get('/api/getData')
+    axios.get(`/api/getData`)
     .then(res => {
       console.log(res.data)
       setIpList(res.data)
@@ -93,12 +93,13 @@ function App() {
         }
       </div>
 
-      <select>
-        <option>dep1</option>
-        <option onClick={() => alert("this is the dep1")}>dep2</option>
+      <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+        <option value=''>please select a department</option>
+        <option value='dep1'>dep1</option>
+        <option value='dep2'>dep2</option>
 
       </select>
-      <p>this is the selected in select tag {selectedOption}</p>
+      <p> {selectedOption} is the selected tag</p>
 
     </div>
   )
