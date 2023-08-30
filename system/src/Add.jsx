@@ -1,6 +1,17 @@
 import React from 'react'
+import axios from 'axios'
+import { useState } from 'react';
+import './Add.css'
 
 function Add() {
+
+    const [ip, setIp] = useState();
+    const [department, setDepartment] = useState();
+    const [propCode, setPropCode] = useState();
+    const [cpuModel, setCpuModel] = useState();
+    const [serialNum, setSerialNum] = useState();
+    const [remarks, setRemarks] = useState();
+    const [hostname, setHostname] = useState();
 
     function handleSubmit(){
         axios.post('/api/add', 
@@ -21,7 +32,7 @@ function Add() {
       }
 
   return (
-    <div>
+    <div className='add-container'>
 
         <label>ip</label>
       <input value={ip} onChange={(e) => setIp(e.target.value)}></input>
