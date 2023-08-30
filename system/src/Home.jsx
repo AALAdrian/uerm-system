@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {BrowserRouter} from 'react-router-dom'
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import './App.css'
 import mysql from 'mysql'
@@ -20,15 +20,27 @@ function Home() {
     const [ipList, setIpList] = useState()
     const [dummyIpList, setDummyIpList] = useState();
     const [selectedOption, setSelectedOption] = useState()
+    const searchRef = useRef()
     
     useEffect(() => {
       axios.get(`/api/getData/${selectedOption}`)
       .then(res => {
-        console.log(res.data)
         setIpList(res.data)
         setDummyIpList(res.data)
+        if(ipList != null || dummyIpList != null){
+            const newIpList = res.data.filter(ip => ip.ip_address.includes(searchRef.current.value))
+            setDummyIpList(newIpList)
+          }
       })
+        
     },[selectedOption])
+/*
+    useEffect(() => {
+         if(ipList){
+            
+         }
+    },[selectedOption])
+*/
   
     function handleSearchInputChange(e){
       const newIpList = ipList.filter(ip => ip.ip_address.includes(e.target.value))
@@ -39,12 +51,20 @@ function Home() {
     <div>
 
 <div className='home-container'>
-
+      <form onSubmit={(e) => {
+        e.preventDefault()
+        const newIpList = ipList.filter(ip => ip.ip_address.includes(searchRef.current.value))
+        setDummyIpList(newIpList)
+      }}>
       <label>search</label>
-      <input type='text' value={ipToSearch} onChange={handleSearchInputChange}></input>
+      <input type='text' ref={searchRef} value={ipToSearch} onChange={handleSearchInputChange}></input>
+      </form>
+
+      
 
       <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
-        <option value="" selected="true" disabled >please select a department</option>
+        <option value='' defaultValue={true} disabled >departments</option>
+        <option value='all'>all</option>
         <option value='engineering'>engineering</option>
         <option value='it'>it</option>
       </select>
@@ -54,6 +74,7 @@ function Home() {
           dummyIpList?.map(ip => 
             <div className='ip-address' key={ip.ip_addres}>
               <p>IP: {ip.ip_address}</p>
+              <p>Department: {ip.department}</p>
             </div>
           )
         }

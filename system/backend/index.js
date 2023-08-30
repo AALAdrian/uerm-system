@@ -35,7 +35,7 @@ connection.connect(function(err) {
   app.use('/api/add', addRouter)
   app.get('/api/getData/:department?', (req, res) => {
     const {department} = req.params
-    if(req.params.department == undefined || req.params.department == 'undefined'){
+    if(req.params.department == 'all' || req.params.department == 'undefined'){
     connection.query('SELECT * FROM computer', (err, result) => {
       if(err){
         console.log(err)
