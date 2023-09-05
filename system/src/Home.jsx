@@ -71,6 +71,17 @@ function Home() {
       setPage(0);
     };
 
+    function handleDeleteButton(e){
+      const ip = "10.107.10"
+      axios.delete(`/api/delete/${ip}`,{
+        ip:"10.107.10",
+        department: "it"
+      })
+      .then((res) => {
+        console.log(res)
+      })
+    }
+
 
     function handleSearchInputChange(e){
       const newIpList = ipList.filter(ip => ip.ip_address.includes(e.target.value))
@@ -87,7 +98,7 @@ function Home() {
         setDummyIpList(newIpList)
       }}>
       <label>search</label>
-      <input type='text' ref={searchRef} value={ipToSearch} onChange={handleSearchInputChange}></input>
+      <input type='text' ref={searchRef} value={ipToSearch} placeholder='search ip address' onChange={handleSearchInputChange}></input>
       </form>
 
 
@@ -116,22 +127,30 @@ function Home() {
       <Table>
         <TableHead>
           {/* Table header content */}
+          <TableCell>ip_address</TableCell>
+          <TableCell>department</TableCell>
+          <TableCell>property_code</TableCell>
+          <TableCell>cpu_model</TableCell>
+          <TableCell>cpu_serial_no</TableCell>
+          <TableCell>remarks</TableCell>
+          <TableCell>hostname</TableCell>
+          <TableCell>status</TableCell>
+
         </TableHead>
         <TableBody>
           {/* Render rows based on current page and rowsPerPage */}
-          {ipList?
+          {dummyIpList && dummyIpList
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map(row => (
               <TableRow key={row.name}>
-                <TableCell>{row.name}</TableCell>
-                <TableCell align="right">{row.ip_address}</TableCell>
-                <TableCell align="right">{row.department}</TableCell>
-                <TableCell align="right">{row.property_code}</TableCell>
-                <TableCell align="right">{row.cpu_model}</TableCell>
-                <TableCell align="right">{row.serial_no}</TableCell>
-                <TableCell align="right">{row.hostname}</TableCell>
-                <TableCell align="right">{row.remarks}</TableCell>
-                <TableCell align="right">{row.status}</TableCell>
+                <TableCell >{row.ip_address}</TableCell>
+                <TableCell >{row.department}</TableCell>
+                <TableCell >{row.property_code}</TableCell>
+                <TableCell >{row.cpu_model}</TableCell>
+                <TableCell >{row.cpu_serial_no}</TableCell>
+                <TableCell >{row.hostname}</TableCell>
+                <TableCell >{row.remarks}</TableCell>
+                <TableCell >{row.status}</TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -148,6 +167,9 @@ function Home() {
       onRowsPerPageChange={handleChangeRowsPerPage}
     />
   </Paper>
+  <button onClick={handleDeleteButton}>
+    delete
+  </button>
 
     </div>
 

@@ -2,6 +2,7 @@ const mysql = require('mysql');
 const express = require('express')
 const app = express();
 const addRouter = require('./routes/add.js')
+const deleteRouter = require('./routes/delete.js')
 const bodyParser = require('body-parser');
 const e = require('express');
 
@@ -32,7 +33,8 @@ connection.connect(function(err) {
 
   const sql = 'INSERT INTO computer (ip_address, department, property_code, cpu_model, cpu_serial_no, remarks, hostname, status) VALUES("ipaddress_sample", "department_sample", "propertycode_sample", "cpumodel_sample", "cpuserial_num_sample", "remarks_sample", "hostname_sample", "status_sample")'
   
-  app.use('/api/add', addRouter)
+  app.use('/api/add', addRouter);
+  app.use('/api',deleteRouter);
   app.get('/api/getData/:department?', (req, res) => {
     const {department} = req.params
     if(req.params.department == 'all' || req.params.department == 'undefined'){
