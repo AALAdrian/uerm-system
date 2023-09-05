@@ -17,9 +17,9 @@ router.get('/',(req, res) => {
 })
 */
 
-router.patch('/edit/:ip', async (req, res) => {
-    const {ipAddress, department}
-    const {ip} = req.params;
+router.patch('/edit/:ipAddress', async (req, res) => {
+    const {ip, department, propCode, cpuModel, serialNum, remarks, hostname} = req.body;
+    const {ipAddress} = req.params;
     const sql1 = 'SELECT * FROM computer WHERE ip_address = ?';
     const queryResult = await new Promise((resolve, reject) => {
         connection.query(sql1, [ip], (err, result) => {

@@ -91,14 +91,17 @@ function Home() {
     async function handleEditButton(e){
 
       axios.patch('/api/edit/10.107.5',{
-        
+        ip,department,propCode,cpuModel,serialNum,remarks,hostname
       })
       .then(res => {
         console.log(res)
       })
+      .catch(err => {
+        console.log(err)
+      })
     }
 
-    function handleGetDataByIdButton(e){
+    function handleGetDataByIpButton(e){
       axios.get('/api/getDataByIp/10.107.5')
       .then(res => {
         console.log(res)
@@ -195,7 +198,7 @@ function Home() {
     delete
   </button>
 
-  <button onClick={handleGetDataByIdButton}>
+  <button onClick={handleGetDataByIpButton}>
     get data by ip
   </button>
 
