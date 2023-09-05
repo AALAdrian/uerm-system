@@ -19,10 +19,11 @@ router.get('/',(req, res) => {
 
 router.patch('/edit/:ipAddress', async (req, res) => {
     const {ip, department, propCode, cpuModel, serialNum, remarks, hostname} = req.body;
+    const updatedData = req.body;
     const {ipAddress} = req.params;
     const sql1 = 'SELECT * FROM computer WHERE ip_address = ?';
     const queryResult = await new Promise((resolve, reject) => {
-        connection.query(sql1, [ip], (err, result) => {
+        connection.query(sql1, [ipAddress], (err, result) => {
             if(err){
                 console.log(err)
                 reject(err)
@@ -32,10 +33,17 @@ router.patch('/edit/:ipAddress', async (req, res) => {
     })
 
     console.log(queryResult);
+
+    
+
+    
     const edited = Object.keys(queryResult).filter(key => {
-        key
+        return updatedData[key] != queryResult[key];
     })
-    //const {ip} = req.params;
+
+    console.log(edited)
+    
+
     /*
     const sql = "UPDATE computer SET ";
     console.log(ip)
