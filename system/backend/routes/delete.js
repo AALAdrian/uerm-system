@@ -24,11 +24,9 @@ router.delete('/delete/:ip', (req, res) => {
     console.log(ip)
     connection.query(sql, [ip], (err, result) => {
         if(err){
-            if(err){
-                res.send({
-                    err
-                })
-            }
+            res.send({
+                err
+            })
             return
         }
         console.log("data is deleted")

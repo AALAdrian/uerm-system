@@ -72,7 +72,7 @@ function Home() {
     };
 
     function handleDeleteButton(e){
-      const ip = "10.107.10"
+      const ip = '10.107.10'
       axios.delete(`/api/delete/${ip}`,{
         ip:"10.107.10",
         department: "it"
@@ -86,6 +86,24 @@ function Home() {
     function handleSearchInputChange(e){
       const newIpList = ipList.filter(ip => ip.ip_address.includes(e.target.value))
       setDummyIpList(newIpList)
+    }
+
+    async function handleEditButton(e){
+
+      axios.patch('/api/edit/10.107.5')
+      .then(res => {
+        console.log(res)
+      })
+    }
+
+    function handleGetDataByIdButton(e){
+      axios.get('/api/getDataByIp/10.107.5')
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
 
   return (
@@ -167,8 +185,16 @@ function Home() {
       onRowsPerPageChange={handleChangeRowsPerPage}
     />
   </Paper>
+  <button onClick={handleEditButton}>
+    edit
+  </button>
+
   <button onClick={handleDeleteButton}>
     delete
+  </button>
+
+  <button onClick={handleGetDataByIdButton}>
+    get data by ip
   </button>
 
     </div>
