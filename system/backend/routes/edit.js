@@ -17,13 +17,26 @@ router.get('/',(req, res) => {
 })
 */
 
-router.patch('/edit/:ip', (req, res) => {
+router.patch('/edit/:ip', async (req, res) => {
+    const {ipAddress, department}
     const {ip} = req.params;
-    axios.get(`/getDataByIp/${ip}`)
-    .then(res => {
-        console.log(res)
+    const sql1 = 'SELECT * FROM computer WHERE ip_address = ?';
+    const queryResult = await new Promise((resolve, reject) => {
+        connection.query(sql1, [ip], (err, result) => {
+            if(err){
+                console.log(err)
+                reject(err)
+            }
+            resolve(result[0]);
+        })
+    })
+
+    console.log(queryResult);
+    const edited = Object.keys(queryResult).filter(key => {
+        key
     })
     //const {ip} = req.params;
+    /*
     const sql = "UPDATE computer SET ";
     console.log(ip)
     connection.query(sql, [ip], (err, result) => {
@@ -36,6 +49,7 @@ router.patch('/edit/:ip', (req, res) => {
         console.log("data is deleted")
         res.send('successfully deleted the data')
     })
+    */
 })
 
 module.exports = router

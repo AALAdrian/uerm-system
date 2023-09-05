@@ -90,7 +90,9 @@ function Home() {
 
     async function handleEditButton(e){
 
-      axios.patch('/api/edit/10.107.5')
+      axios.patch('/api/edit/10.107.5',{
+        
+      })
       .then(res => {
         console.log(res)
       })
