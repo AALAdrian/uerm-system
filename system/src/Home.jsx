@@ -88,7 +88,25 @@ function Home() {
       setDummyIpList(newIpList)
     }
 
-    async function handleEditButton(e){
+    function handleEditButton(e){
+      const ip = e.target.dataset.ip;
+      axios.get(`/api/getDataByIp/${ip}`)
+      .then(res => {
+        const {ip_address, department, property_code, cpu_model, hostname, remarks, cpu_serial_no} = res.data;
+        setIp(ip_address);
+        setDepartment(department);
+        setPropCode(property_code);
+        setCpuModel(cpu_model);
+        setHostname(hostname);
+        setRemarks(remarks);
+        setSerialNum(cpu_serial_no);
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+    
+    /*async function handleEditButton(e){
 
       axios.patch('/api/edit/10.107.5',{
         ip,department,propCode,cpuModel,serialNum,remarks,hostname
@@ -99,7 +117,7 @@ function Home() {
       .catch(err => {
         console.log(err)
       })
-    }
+    }*/
 
     function handleGetDataByIpButton(e){
       axios.get('/api/getDataByIp/10.107.5')
@@ -158,6 +176,7 @@ function Home() {
           <TableCell>remarks</TableCell>
           <TableCell>hostname</TableCell>
           <TableCell>status</TableCell>
+          <TableCell>action</TableCell>
 
         </TableHead>
         <TableBody>
@@ -174,6 +193,8 @@ function Home() {
                 <TableCell >{row.hostname}</TableCell>
                 <TableCell >{row.remarks}</TableCell>
                 <TableCell >{row.status}</TableCell>
+                <TableCell><button onClick={handleEditButton} data-ip={row.ip_address}>edit</button></TableCell>
+
               </TableRow>
             ))}
         </TableBody>
@@ -201,6 +222,37 @@ function Home() {
   <button onClick={handleGetDataByIpButton}>
     get data by ip
   </button>
+
+  <div>
+
+    <form onSubmit={(e) => e.preventDefault()}>
+
+    <label>ip address</label>
+    <input type='text' value={ip} onChange={(e) => setIp(e.target.value)}></input>
+
+    <label>department</label>
+    <input type='text' value={department} onChange={(e) => setDepartment(e.target.value)}></input>
+
+    <label>property_code</label>
+    <input type='text' value={propCode} onChange={(e) => setPropCode(e.target.value)}></input>   
+
+    <label>cpu_model</label>
+    <input type='text' value={cpuModel} onChange={(e) => setCpuModel(e.target.value)}></input>  
+
+    <label>cpu_serial_no</label>
+    <input type='text' value={serialNum} onChange={(e) => setSerialNum(e.target.value)}></input>   
+
+    <label>remarks</label>
+    <input type='text' value={remarks} onChange={(e) => setRemarks(e.target.value)}></input>
+
+    <label>hostname</label>
+    <input type='text' value={hostname} onChange={(e) => setHostname(e.target.value)}></input>
+
+    <button type='submit'>submit</button>
+
+    </form>
+
+  </div>
 
     </div>
 
