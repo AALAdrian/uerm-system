@@ -13,6 +13,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
+import xButton from './assets/x-button.png'
 
 function Home() {
 
@@ -33,6 +34,8 @@ function Home() {
     const rowsPerPageOptions = [5, 10]; // Options for rows per page
     const defaultRowsPerPage = 10; // Default rows per page
     const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
+    const addPopupRef = useRef();
+    const [xToggle, setXToggle] = useState(false);
 
 
 
@@ -105,6 +108,31 @@ function Home() {
         console.log(err)
       })
     }
+
+    function handleSubmit(){
+
+      axios.post('/api/add', 
+      {
+        ip, department, propCode, cpuModel, serialNum, remarks, hostname
+      }
+      ).then(res => {
+        if(res.data.error){
+          alert(res.data.error)
+          console.log(res.data.error)
+        }
+        if(res.data.err){
+          console.log(res.data.err)
+        }
+        else{
+          console.log(res.data)
+        }
+      })
+      .catch(err => {
+        alert(err)
+        console.log(err)
+      })
+      
+    }
     
     /*async function handleEditButton(e){
 
@@ -127,6 +155,10 @@ function Home() {
       .catch(err => {
         console.log(err)
       })
+    }
+
+    function handleXClick(e){
+
     }
 
   return (
@@ -267,6 +299,36 @@ function Home() {
 
   </div>
             */}
+
+<div className='add-container' ref={addPopupRef}>
+  <form className='add-popup-container'>         
+    <label>Ip Address</label>
+    <input value={ip} onChange={(e) => setIp(e.target.value)}></input>
+
+    <label>Department</label>
+    <input value={department} onChange={(e) => setDepartment(e.target.value)}></input>
+
+    <label>Property Code</label>
+    <input value={propCode} onChange={(e) => setPropCode(e.target.value)}></input>
+
+    <label>Cpu Model</label>
+    <input value={cpuModel} onChange={(e) => setCpuModel(e.target.value)}></input>
+
+    <label>Cpu Serial Number</label>
+    <input value={serialNum} onChange={(e) => setSerialNum(e.target.value)}></input>
+
+    <label>Remarks</label>
+    <input value={remarks} onChange={(e) => setRemarks(e.target.value)}></input>
+
+    <label>Hostname</label>
+    <input value={hostname} onChange={(e) => setHostname(e.target.value)}></input>
+
+    <button onClick={handleSubmit}>Submit</button>
+    <br></br><br></br>
+
+     <img src={xButton} className='x-button' onClick={handleXClick}></img>       
+  </form>          
+</div>
 
 </div>
 

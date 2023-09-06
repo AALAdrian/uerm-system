@@ -14,6 +14,7 @@ function Add() {
     const [hostname, setHostname] = useState();
 
     function handleSubmit(){
+
         axios.post('/api/add', 
         {
           ip, department, propCode, cpuModel, serialNum, remarks, hostname
@@ -34,6 +35,7 @@ function Add() {
           alert(err)
           console.log(err)
         })
+        
       }
 
   return (
