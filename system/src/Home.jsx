@@ -38,6 +38,7 @@ function Home() {
     const [xToggle, setXToggle] = useState(false);
     const [editToggle, setEditToggle] = useState(false);
     const [dataCount, setDataCount] = useState(1)
+    const [forceRender, setForceRender] = useState(0)
 
 
 
@@ -60,7 +61,7 @@ function Home() {
           }
       })
 
-    },[selectedOption])
+    },[selectedOption, forceRender])
 /*
     useEffect(() => {
          if(ipList){
@@ -95,13 +96,11 @@ useEffect(() => {
     };
 
     function handleDeleteButton(e){
-      const ip = 
-      axios.delete(`/api/delete/${ip}`,{
-        ip:"10.107.10",
-        department: "it"
-      })
+      const ip = e.target.dataset.ip;
+      axios.delete(`/api/delete/${ip}`)
       .then((res) => {
         console.log(res);
+        setForceRender(forceRender + 1);
       })
     }
 
@@ -125,7 +124,7 @@ useEffect(() => {
         setSerialNum(cpu_serial_no);
       })
       .catch(err => {
-        console.log(err)
+        console.log(err);
       })
     }
 
@@ -144,6 +143,7 @@ useEffect(() => {
           console.log(res.data.err)
         }
         else{
+          alert(res.data)
           console.log(res.data)
         }
       })
@@ -284,20 +284,8 @@ useEffect(() => {
     />
   </Paper>
 
-  {/*
-  <button onClick={handleEditButton}>
-    edit
-  </button>
-
-  <button onClick={handleDeleteButton}>
-    delete
-  </button>
-
-  <button onClick={handleGetDataByIpButton}>
-    get data by ip
-  </button>
   
-  <div>
+  <div className='edit-popup-container'>
 
     <form onSubmit={(e) => e.preventDefault()}>
 
@@ -327,7 +315,7 @@ useEffect(() => {
     </form>
 
   </div>
-            */}
+            
 
 <div className='add-container' ref={addPopupRef}>
   <form className='add-popup-container'>         
