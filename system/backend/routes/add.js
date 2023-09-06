@@ -22,9 +22,11 @@ router.post('/', (req, res) => {
     const sql = 'INSERT INTO computer (ip_address, department, property_code, cpu_model, cpu_serial_no, remarks, hostname) VALUES(?,?,?,?,?,?,?)'
     connection.query(sql, [ip,department,propCode,cpuModel,serialNum,remarks,hostname], (err, result) => {
         if(err){
+            console.log(err)
             if(err.code == "ER_DUP_ENTRY"){
                 res.send({
-                    error: "the ip address already exists"
+                    error: "the ip address already exists",
+                    err
                 })
             }
             return

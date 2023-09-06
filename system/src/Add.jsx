@@ -20,13 +20,18 @@ function Add() {
         }
         ).then(res => {
           if(res.data.error){
+            alert(res.data.error)
             console.log(res.data.error)
+          }
+          if(res.data.err){
+            console.log(res.data.err)
           }
           else{
             console.log(res.data)
           }
         })
         .catch(err => {
+          alert(err)
           console.log(err)
         })
       }

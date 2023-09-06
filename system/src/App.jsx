@@ -10,14 +10,15 @@ import Add from './Add'
 function App() {
 
   
-
   return (
+    <div className='app-container'>
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/add' element={<Add/>}/>
       </Routes>
     </BrowserRouter>
+    </div>
   )
 }
 

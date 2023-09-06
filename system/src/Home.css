@@ -1,3 +1,56 @@
+@font-face {
+    font-family: 'robotoMedium';
+    src: url('./fonts/Roboto/Roboto-Medium.ttf');
+  }
+
+.home-container{
+    font-family: 'robotoMedium';
+    display: flex;
+}
+
+.home-container > * {
+}
+
+.home-container .left-section form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home-container .left-section{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.home-container .left-section input, .home-container .left-section select, .home-container .left-section button{
+    width: 80%;
+    height: 40px;
+    padding-left: 5px;
+    margin-bottom: 30px;
+    border: 1px solid rgb(0, 0, 0);
+    font-family: robotoMedium;
+}
+
+.home-container .left-section button{
+    background-color: white;
+    border: 1px solid black;
+    width: 60% !important;
+    margin-top: 300px;
+    box-shadow: 0.5px 0.5px 2px rgb(58, 58, 58);
+}
+
+.home-container .left-section button:hover{
+    background-color: rgb(201, 201, 201);
+    cursor: pointer;
+}
+
+.home-container .right-section{
+    width: 70%;
+}
+
 .home-container input{
     display: block;
 }
@@ -6,3 +59,9 @@
     border: 1px solid black;
     width: 100px;
 }
+
+.home-container form{
+    display: flex;
+}
+
+

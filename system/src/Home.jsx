@@ -30,8 +30,8 @@ function Home() {
     const [selectedOption, setSelectedOption] = useState()
     const searchRef = useRef()
     const [page, setPage] = useState(0);
-    const rowsPerPageOptions = [5, 10, 25]; // Options for rows per page
-    const defaultRowsPerPage = 5; // Default rows per page
+    const rowsPerPageOptions = [5, 10]; // Options for rows per page
+    const defaultRowsPerPage = 10; // Default rows per page
     const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
 
 
@@ -133,16 +133,16 @@ function Home() {
     <div>
 
 <div className='home-container'>
+
+    <div className='left-section'>
+
       <form onSubmit={(e) => {
         e.preventDefault()
         const newIpList = ipList.filter(ip => ip.ip_address.includes(searchRef.current.value))
         setDummyIpList(newIpList)
       }}>
-      <label>search</label>
-      <input type='text' ref={searchRef} value={ipToSearch} placeholder='search ip address' onChange={handleSearchInputChange}></input>
-      </form>
 
-
+      <input type='text' ref={searchRef} value={ipToSearch} placeholder='Search IP Address' onChange={handleSearchInputChange}></input>
 
       <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
         <option value='' defaultValue={true} disabled >departments</option>
@@ -151,6 +151,16 @@ function Home() {
         <option value='it'>it</option>
       </select>
 
+      <button>ADD</button>
+
+      </form>
+
+      
+
+    </div>
+
+    <div className='right-section'>
+      {/*
       <div className='ip-list'>
         {
           dummyIpList?.map(ip =>
@@ -161,6 +171,7 @@ function Home() {
           )
         }
       </div>
+      */}
 
       
   <Paper>
@@ -211,6 +222,8 @@ function Home() {
       onRowsPerPageChange={handleChangeRowsPerPage}
     />
   </Paper>
+
+  {/*
   <button onClick={handleEditButton}>
     edit
   </button>
@@ -222,7 +235,7 @@ function Home() {
   <button onClick={handleGetDataByIpButton}>
     get data by ip
   </button>
-
+  
   <div>
 
     <form onSubmit={(e) => e.preventDefault()}>
@@ -253,6 +266,9 @@ function Home() {
     </form>
 
   </div>
+            */}
+
+</div>
 
     </div>
 
