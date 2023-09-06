@@ -65,6 +65,18 @@ function Home() {
     },[selectedOption])
 */
 
+useEffect(() => {
+  const addPopup = addPopupRef.current;
+  const computedStyle = window.getComputedStyle(addPopup);
+
+  if (xToggle && computedStyle.getPropertyValue('display') !== 'flex') {
+    addPopup.style.display = 'flex';
+  } else if (!xToggle && computedStyle.getPropertyValue('display') !== 'none') {
+    addPopup.style.display = 'none';
+  }
+}, [xToggle]);
+
+
     function handleChangePage (event, newPage){
       setPage(newPage);
     };
@@ -158,7 +170,11 @@ function Home() {
     }
 
     function handleXClick(e){
+      setXToggle(!xToggle);
+    }
 
+    function handleAddClick(e){
+      setXToggle(!xToggle)
     }
 
   return (
@@ -183,7 +199,7 @@ function Home() {
         <option value='it'>it</option>
       </select>
 
-      <button>ADD</button>
+      <button onClick={handleAddClick}>ADD</button>
 
       </form>
 
