@@ -92,24 +92,24 @@
     font-size: 0.95rem;
 }
 
-.add-popup-container input{
+.add-popup-container input, .edit-popup-container input{
     margin-bottom: 8px;
     padding-left: 10px;
 }
 
-.add-popup-container button , .add-popup-container input{
+.add-popup-container button , .add-popup-container input, .edit-popup-container button , .edit-popup-container input{
     height: 23px;
     border: 1px solid black;
 }
 
-.add-popup-container button{
+.add-popup-container button, .edit-popup-container button{
     margin-top: 40px;
     background-color: white;
     height: 30px;
     font-size: 1.05rem;
 }
 
-.add-popup-container label{
+.add-popup-container label, .edit-popup-container label{
     margin-bottom: 5px;
 }
 
@@ -159,4 +159,19 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.37);
+    padding-bottom: 50px;
+}
+
+.edit-popup-container form{
+    display: flex;
+    flex-direction: column;
+    width: 550px;
+    background-color: white;
+    height: 600px;
+    padding: 0 90px;
+    padding-top: 70px;
+    position: relative;
+    box-shadow: 2px 2px 4px rgb(88, 88, 88);
+    border-radius: 5px;
+    font-size: 0.95rem;
 }

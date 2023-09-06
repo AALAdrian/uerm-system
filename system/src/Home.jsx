@@ -177,6 +177,7 @@ useEffect(() => {
       })
     }
 
+
     function handleXClick(e){
       setXToggle(!xToggle);
     }
@@ -287,7 +288,7 @@ useEffect(() => {
   
   <div className='edit-popup-container'>
 
-    <form onSubmit={(e) => e.preventDefault()}>
+    <form onSubmit={(e) => e.preventDefault()} >
 
     <label>ip address</label>
     <input type='text' value={ip} onChange={(e) => setIp(e.target.value)}></input>
@@ -311,6 +312,8 @@ useEffect(() => {
     <input type='text' value={hostname} onChange={(e) => setHostname(e.target.value)}></input>
 
     <button type='submit'>submit</button>
+
+    <img src={xButton} className='x-button' onClick={}></img>
 
     </form>
 
