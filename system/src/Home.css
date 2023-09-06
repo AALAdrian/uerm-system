@@ -19,7 +19,7 @@
 }
 
 .home-container .left-section{
-    width: 30%;
+    width: 25%;
     display: flex;
     flex-direction: column;
 }
@@ -39,7 +39,7 @@
     border: 1px solid black;
     width: 60% !important;
     margin-top: 300px;
-    box-shadow: 0.5px 0.5px 2px rgb(58, 58, 58);
+    box-shadow: 0.5px 0.5px 2px rgb(134, 134, 134);
 }
 
 .home-container .left-section button:hover{
@@ -48,7 +48,7 @@
 }
 
 .home-container .right-section{
-    width: 70%;
+    width: 75%;
 }
 
 .home-container input{
@@ -125,4 +125,26 @@
     width: 36px;
     height: 36px;
     cursor: pointer;
+}
+
+.edit-delete-container button{
+    width: 50px;
+    height: 20px;
+    margin-right: 10px;
+    border: 1px solid gray;
+}
+
+.edit-delete-container .delete-button{
+    background-color: red;
+    color: white;
+}
+
+.edit-delete-container .edit-button{
+    background-color: rgb(241, 241, 44);
+    color: black;
+}
+
+.edit-delete-container .edit-button:hover, .edit-delete-container .delete-button:hover{
+    cursor: pointer;
+    background-color: gray;
 }

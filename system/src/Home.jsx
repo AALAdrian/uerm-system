@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useDebugValue, useEffect } from 'react'
 import {BrowserRouter} from 'react-router-dom'
 import { useState, useRef } from 'react';
 import axios from 'axios';
@@ -36,6 +36,8 @@ function Home() {
     const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
     const addPopupRef = useRef();
     const [xToggle, setXToggle] = useState(false);
+    const [editToggle, setEditToggle] = useState(false);
+    const [dataCount, setDataCount] = useState(1)
 
 
 
@@ -50,9 +52,11 @@ function Home() {
       .then(res => {
         setIpList(res.data)
         setDummyIpList(res.data)
+        setDataCount(Object.keys(res.data).length)
         if(ipList != null || dummyIpList != null){
             const newIpList = res.data.filter(ip => ip.ip_address.includes(searchRef.current.value))
             setDummyIpList(newIpList)
+            setDataCount(Object.keys(newIpList).length)
           }
       })
 
@@ -76,6 +80,10 @@ useEffect(() => {
   }
 }, [xToggle]);
 
+useEffect(() => {
+
+}, [editToggle])
+
 
     function handleChangePage (event, newPage){
       setPage(newPage);
@@ -87,13 +95,13 @@ useEffect(() => {
     };
 
     function handleDeleteButton(e){
-      const ip = '10.107.10'
+      const ip = 
       axios.delete(`/api/delete/${ip}`,{
         ip:"10.107.10",
         department: "it"
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
       })
     }
 
@@ -227,15 +235,15 @@ useEffect(() => {
       <Table>
         <TableHead>
           {/* Table header content */}
-          <TableCell>ip_address</TableCell>
-          <TableCell>department</TableCell>
-          <TableCell>property_code</TableCell>
-          <TableCell>cpu_model</TableCell>
-          <TableCell>cpu_serial_no</TableCell>
-          <TableCell>remarks</TableCell>
-          <TableCell>hostname</TableCell>
-          <TableCell>status</TableCell>
-          <TableCell>action</TableCell>
+          <TableCell align='center'>Ip Address</TableCell>
+          <TableCell align='center'>Department</TableCell>
+          <TableCell align='center'>Property Code</TableCell>
+          <TableCell align='center'>Cpu Model</TableCell>
+          <TableCell align='center'>Cpu Serial Num</TableCell>
+          <TableCell align='center'>Remarks</TableCell>
+          <TableCell align='center'>Hostname</TableCell>
+          <TableCell align='center'>Status</TableCell>
+          <TableCell align='center'>Action</TableCell>
 
         </TableHead>
         <TableBody>
@@ -244,15 +252,20 @@ useEffect(() => {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map(row => (
               <TableRow key={row.name}>
-                <TableCell >{row.ip_address}</TableCell>
-                <TableCell >{row.department}</TableCell>
-                <TableCell >{row.property_code}</TableCell>
-                <TableCell >{row.cpu_model}</TableCell>
-                <TableCell >{row.cpu_serial_no}</TableCell>
-                <TableCell >{row.hostname}</TableCell>
-                <TableCell >{row.remarks}</TableCell>
-                <TableCell >{row.status}</TableCell>
-                <TableCell><button onClick={handleEditButton} data-ip={row.ip_address}>edit</button></TableCell>
+                <TableCell align='center'>{row.ip_address}</TableCell>
+                <TableCell align='center'>{row.department}</TableCell>
+                <TableCell align='center'>{row.property_code}</TableCell>
+                <TableCell align='center'>{row.cpu_model}</TableCell>
+                <TableCell align='center'>{row.cpu_serial_no}</TableCell>
+                <TableCell align='center'>{row.hostname}</TableCell>
+                <TableCell align='center'>{row.remarks}</TableCell>
+                <TableCell align='center'>{row.status}</TableCell>
+                <TableCell align='center'>
+                  <div className='edit-delete-container'>
+                    <button onClick={handleEditButton} data-ip={row.ip_address} className='edit-button'>Edit</button>
+                    <button className='delete-button' data-ip={row.ip_address} onClick={handleDeleteButton}>Delete</button>
+                  </div>
+                </TableCell>
 
               </TableRow>
             ))}
@@ -263,7 +276,7 @@ useEffect(() => {
     <TablePagination
       rowsPerPageOptions={rowsPerPageOptions}
       component="div"
-      count={rows.length}
+      count={dataCount}
       rowsPerPage={rowsPerPage}
       page={page}
       onPageChange={handleChangePage}
