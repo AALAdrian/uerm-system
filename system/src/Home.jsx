@@ -39,15 +39,14 @@ function Home() {
     const [editToggle, setEditToggle] = useState(false);
     const [dataCount, setDataCount] = useState(1)
     const [forceRender, setForceRender] = useState(0)
+    const editPopupRef = useRef();
+    const [selectedIp, setSelectedIp] = useState()
+    const deletePopupRef = useRef();
+    const [deletePopupToggle, setDeletePopupToggle] = useState(false)
 
 
+    
 
-    const rows = [
-      { name: 'Alice', dsa: 90, maths: 85, dbms: 78, networking: 93 },
-      // Add more rows
-    ];
-
-    console.log(ipList)
     useEffect(() => {
       axios.get(`/api/getData/${selectedOption}`)
       .then(res => {
@@ -62,28 +61,74 @@ function Home() {
       })
 
     },[selectedOption, forceRender])
-/*
-    useEffect(() => {
-         if(ipList){
 
-         }
-    },[selectedOption])
-*/
+    useEffect(() => {
+      axios.get('/api/get-local-ip')
+      .then(res => {
+        alert(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }, []);
 
 useEffect(() => {
   const addPopup = addPopupRef.current;
-  const computedStyle = window.getComputedStyle(addPopup);
+  const addcomputedStyle = window.getComputedStyle(addPopup);
 
-  if (xToggle && computedStyle.getPropertyValue('display') !== 'flex') {
+  if(xToggle && addcomputedStyle.getPropertyValue('display') !== 'flex') {
     addPopup.style.display = 'flex';
-  } else if (!xToggle && computedStyle.getPropertyValue('display') !== 'none') {
+  } else if(!xToggle && addcomputedStyle.getPropertyValue('display') !== 'none') {
+        setIp('');
+        setDepartment('');
+        setPropCode('');
+        setCpuModel('');
+        setHostname('');
+        setRemarks('');
+        setSerialNum('');
     addPopup.style.display = 'none';
   }
 }, [xToggle]);
 
 useEffect(() => {
+  const editPopup = editPopupRef.current;
+  const editcomputedStyle = window.getComputedStyle(editPopup);
 
-}, [editToggle])
+  if(editToggle && editcomputedStyle.getPropertyValue('display') !== 'flex'){
+    editPopup.style.display = 'flex'
+  } else if(!editToggle && editcomputedStyle.getPropertyValue('display') !== 'none'){
+        setIp('');
+        setDepartment('');
+        setPropCode('');
+        setCpuModel('');
+        setHostname('');
+        setRemarks('');
+        setSerialNum('');
+        setSelectedIp('')
+    editPopup.style.display = 'none'
+  }
+},[editToggle])
+
+useEffect(() => {
+  const deletePopup = deletePopupRef.current;
+  const deletecomputedStyle = window.getComputedStyle(deletePopup);
+
+  if(deletePopupToggle && deletecomputedStyle.getPropertyValue('display') !== 'flex'){
+    deletePopup.style.display = 'flex'
+  } else if(!deletePopupToggle && deletecomputedStyle.getPropertyValue('display') !== 'none'){
+        setIp('');
+        setDepartment('');
+        setPropCode('');
+        setCpuModel('');
+        setHostname('');
+        setRemarks('');
+        setSerialNum('');
+        setSelectedIp('')
+    deletePopup.style.display = 'none'
+  }
+},[deletePopupToggle])
+
+
 
 
     function handleChangePage (event, newPage){
@@ -96,10 +141,11 @@ useEffect(() => {
     };
 
     function handleDeleteButton(e){
-      const ip = e.target.dataset.ip;
-      axios.delete(`/api/delete/${ip}`)
+      //const ip = e.target.dataset.ip;
+      axios.delete(`/api/delete/${selectedIp}`)
       .then((res) => {
         console.log(res);
+        setDeletePopupToggle(!deletePopupToggle)
         setForceRender(forceRender + 1);
       })
     }
@@ -122,13 +168,32 @@ useEffect(() => {
         setHostname(hostname);
         setRemarks(remarks);
         setSerialNum(cpu_serial_no);
+        setEditToggle(!editToggle)
+        setSelectedIp(e.target.dataset.ip)
       })
       .catch(err => {
         console.log(err);
       })
     }
 
-    function handleSubmit(){
+    function handleEditSubmit(e){
+      axios.patch(`/api/edit/${selectedIp}`,{
+        ip_address: ip,department,property_code: propCode,cpu_model: cpuModel,cpu_serial_no: serialNum,remarks,hostname
+      })
+      .then(res => {
+        console.log(res)
+        setEditToggle(!editToggle)
+        setForceRender(forceRender + 1)
+      })
+      .catch(err => {
+        console.log(err)
+        setEditToggle(!editToggle)
+      })
+    }
+
+    function handleSubmit(e){
+
+      e.preventDefault();
 
       axios.post('/api/add', 
       {
@@ -145,6 +210,7 @@ useEffect(() => {
         else{
           alert(res.data)
           console.log(res.data)
+          setXToggle(!xToggle)
         }
       })
       .catch(err => {
@@ -156,15 +222,7 @@ useEffect(() => {
     
     /*async function handleEditButton(e){
 
-      axios.patch('/api/edit/10.107.5',{
-        ip,department,propCode,cpuModel,serialNum,remarks,hostname
-      })
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      
     }*/
 
     function handleGetDataByIpButton(e){
@@ -264,7 +322,10 @@ useEffect(() => {
                 <TableCell align='center'>
                   <div className='edit-delete-container'>
                     <button onClick={handleEditButton} data-ip={row.ip_address} className='edit-button'>Edit</button>
-                    <button className='delete-button' data-ip={row.ip_address} onClick={handleDeleteButton}>Delete</button>
+                    <button className='delete-button' data-ip={row.ip_address} onClick={(e) => {
+                      setDeletePopupToggle(!deletePopupToggle)
+                      setSelectedIp(e.target.dataset.ip);
+                      }}>Delete</button>
                   </div>
                 </TableCell>
 
@@ -286,9 +347,11 @@ useEffect(() => {
   </Paper>
 
   
-  <div className='edit-popup-container'>
+  <div className='edit-popup-container' ref={editPopupRef}>
 
     <form onSubmit={(e) => e.preventDefault()} >
+    
+    <h2>Edit</h2>          
 
     <label>ip address</label>
     <input type='text' value={ip} onChange={(e) => setIp(e.target.value)}></input>
@@ -311,9 +374,9 @@ useEffect(() => {
     <label>hostname</label>
     <input type='text' value={hostname} onChange={(e) => setHostname(e.target.value)}></input>
 
-    <button type='submit'>submit</button>
+    <button type='submit' onClick={handleEditSubmit}>Submit</button>
 
-    <img src={xButton} className='x-button' onClick={}></img>
+    <img src={xButton} className='x-button' onClick={(e) => setEditToggle(!editToggle)}></img>
 
     </form>
 
@@ -321,15 +384,15 @@ useEffect(() => {
             
 
 <div className='add-container' ref={addPopupRef}>
-  <form className='add-popup-container'>         
+  <form className='add-popup-container' onSubmit={handleSubmit}>         
     <label>Ip Address</label>
-    <input value={ip} onChange={(e) => setIp(e.target.value)}></input>
+    <input value={ip} placeholder='xxx.xxx.xxx.xxx' required onChange={(e) => setIp(e.target.value)}></input>
 
     <label>Department</label>
     <input value={department} onChange={(e) => setDepartment(e.target.value)}></input>
 
     <label>Property Code</label>
-    <input value={propCode} onChange={(e) => setPropCode(e.target.value)}></input>
+    <input value={propCode} required onChange={(e) => setPropCode(e.target.value)}></input>
 
     <label>Cpu Model</label>
     <input value={cpuModel} onChange={(e) => setCpuModel(e.target.value)}></input>
@@ -343,11 +406,31 @@ useEffect(() => {
     <label>Hostname</label>
     <input value={hostname} onChange={(e) => setHostname(e.target.value)}></input>
 
-    <button onClick={handleSubmit}>Submit</button>
+    <button>Submit</button>
     <br></br><br></br>
 
      <img src={xButton} className='x-button' onClick={handleXClick}></img>       
   </form>          
+</div>
+
+<div className='delete-confirmation-container' ref={deletePopupRef}>
+  <div className='delete-confirmation-modal'>
+  <img src={xButton} className='x-button' onClick={() => {
+    setDeletePopupToggle(!deletePopupToggle);
+    setSelectedIp('');
+    }}></img>
+    <h2>Delete Confirmation</h2>
+    <div className='mid-section'>
+      <p>Are you sure you want to delete this data with the Ip Address of <span>{selectedIp}</span></p>
+    </div>
+    <div className='buttons-container'>
+      <button className='cancel' onClick={() => {
+        setDeletePopupToggle(!deletePopupToggle);
+        setSelectedIp('')
+        }}>Cancel</button>
+      <button className='confirm' onClick={handleDeleteButton}>Confirm</button>
+    </div>
+  </div>
 </div>
 
 </div>
