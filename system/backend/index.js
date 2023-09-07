@@ -65,10 +65,6 @@ connection.connect(function(err) {
 
   })
 
-  app.get('/api/get-local-ip', (req, res) => {
-    // Get the local IP address of the user
-    const ipAddress = req.socket.remoteAddress;
-    res.send(ipAddress);
-  });
+  
 
 });
