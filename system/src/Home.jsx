@@ -14,6 +14,8 @@ import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import xButton from './assets/x-button.png'
+import {internalIpV6, internalIpV4} from 'internal-ip';
+import os from 'os'
 
 function Home() {
 
@@ -44,6 +46,9 @@ function Home() {
     const deletePopupRef = useRef();
     const [deletePopupToggle, setDeletePopupToggle] = useState(false)
 
+    
+
+
 
     
 
@@ -63,14 +68,9 @@ function Home() {
     },[selectedOption, forceRender])
 
     useEffect(() => {
-      axios.get('/api/get-local-ip')
-      .then(res => {
-        alert(res.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    }, []);
+      getIP();
+    },[])
+    
 
 useEffect(() => {
   const addPopup = addPopupRef.current;
@@ -127,6 +127,24 @@ useEffect(() => {
     deletePopup.style.display = 'none'
   }
 },[deletePopupToggle])
+
+const getIP = async () => {
+  const { RTCPeerConnection } = window;
+  const pc = new RTCPeerConnection({ iceServers: [] });
+  pc.createDataChannel('');
+  pc.createOffer().then(pc.setLocalDescription.bind(pc));
+  pc.onicecandidate = (ice) => {
+    if (!ice || !ice.candidate || !ice.candidate.candidate) return;
+    const ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
+    const ipMatch = ice.candidate.candidate.match(ipRegex);
+    const ip = ipMatch && ipMatch[1];
+    alert("this is your ip address",ip);
+    console.log(ice.candidate.candidate)
+    pc.onicecandidate = () => {};
+  };
+};
+
+
 
 
 
