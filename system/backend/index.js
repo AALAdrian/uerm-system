@@ -2,10 +2,13 @@ const mysql = require('mysql');
 const express = require('express');
 const app = express();
 const addRouter = require('./routes/add.js');
-const editRouter = require('./routes/edit.js')
+const editRouter = require('./routes/edit.js');
+const loginRouter = require('./routes/login.js')
 const deleteRouter = require('./routes/delete.js');
 const getDataByIdRouter = require('./routes/getDataByIp.js');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const e = require('express');
 
 app.listen(3000,(err) => {
@@ -15,8 +18,19 @@ app.listen(3000,(err) => {
     }
     console.log('app is listening to port 3000')
 })
-
+app.use(cookieParser());
 app.use(bodyParser.json());
+app.use (
+  session ({
+      key: "userId",
+      secret: "$Bwwti9nnU3BK1niBERucsOZ3LJMEcMQ/GHrAAol.VdwWJWw.AfHBW",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+          maxAge: 30 * 1000,
+      },
+  })
+);
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -38,6 +52,7 @@ connection.connect(function(err) {
   app.use('/api/add', addRouter);
   app.use('/api', editRouter);
   app.use('/api',deleteRouter);
+  app.use('/api/login', loginRouter)
   app.use('/api', getDataByIdRouter);
   app.get('/api/getData/:department?', (req, res) => {
     const {department} = req.params
