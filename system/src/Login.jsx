@@ -4,7 +4,7 @@ import { useState, useRef} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Login({loginStatus}) {
+function Login({setLoginStatus}) {
 
   const [eyeIconToggle, setEyeIconToggle] = useState(false);
   const passwordInputRef = useRef();
@@ -29,6 +29,7 @@ function Login({loginStatus}) {
     })
     .then(res => {
       if(res.data){
+        setLoginStatus(true)
         navigate('/app');
       }
     })
