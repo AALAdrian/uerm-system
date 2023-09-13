@@ -49,10 +49,9 @@ function App() {
     <div className='app-container'>
       <BrowserRouter>
         <Routes>
-          {
-            !loginStatus && <Route path='/' element={<Login setLoginStatus={setLoginStatus}/>}/>
-          }
-          <Route path='/' element={loginStatus ? <Navigate to='/app'/> : <Navigate to='/'/>}/>
+          
+          <Route path='/' element={loginStatus ? <Navigate to='/app'/> : <Navigate to='/login'/>}/>
+          <Route path='login' element={<Login setLoginStatus={setLoginStatus}/>}/>
           
           <Route element={<ProtectedRoute loginStatus={loginStatus}/>}>
             <Route path='/app' element={<Home/>}/>
