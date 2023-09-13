@@ -49,10 +49,11 @@ function App() {
     <div className='app-container'>
       <BrowserRouter>
         <Routes>
-          { 
-          
-          <Route path='/' element={loginStatus ? <Navigate to='/app'/> : <Login setLoginStatus={setLoginStatus}/>}/>
+          {
+            !loginStatus && <Route path='/' element={<Login setLoginStatus={setLoginStatus}/>}/>
           }
+          <Route path='/' element={loginStatus ? <Navigate to='/app'/> : <Navigate to='/'/>}/>
+          
           <Route element={<ProtectedRoute loginStatus={loginStatus}/>}>
             <Route path='/app' element={<Home/>}/>
           </Route>
