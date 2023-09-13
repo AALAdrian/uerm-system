@@ -52,7 +52,6 @@ function Home() {
 
     useEffect(() => {
       //window.location.href = window.location.href + 'app'
-      console.log(window.location)
     },[])
 
     useEffect(() => {
@@ -72,7 +71,6 @@ function Home() {
 
     useEffect(() => {
       getIP();
-      console.log(window.location.url)
     },[])
     
 

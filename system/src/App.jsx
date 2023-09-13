@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, Navigate, useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import axios from 'axios';
 import './App.css'
@@ -8,20 +8,15 @@ import Home from './Home';
 import Add from './Add'
 import Login from './Login';
 import ProtectedRoute from './ProtectedRoute';
-//import { useNavigate } from 'react-router-dom';
 
 function App() {
 
   const [loginStatus, setLoginStatus] = useState(false)
   const [cookieChecker, setCookieChecker] = useState(false)
+  //const navigate = useNavigate()
   axios.defaults.withCredentials = true;
 
-  useEffect(() => {
-    if(loginStatus){
-      window.location.href = window.location.href + 'app'
-      console.log("hello")
-    }
-  },[])
+  
 
   useEffect(() => {
     axios.get("/api/login").then((response) => {
@@ -54,11 +49,13 @@ function App() {
     <div className='app-container'>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Login setLoginStatus={setLoginStatus}/>}/>
+          { 
+          
+          <Route path='/' element={loginStatus ? <Navigate to='/app'/> : <Login setLoginStatus={setLoginStatus}/>}/>
+          }
           <Route element={<ProtectedRoute loginStatus={loginStatus}/>}>
             <Route path='/app' element={<Home/>}/>
           </Route>
-          
         </Routes>
       </BrowserRouter>
     </div>

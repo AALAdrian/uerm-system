@@ -12,11 +12,7 @@ function Login({loginStatus, setLoginStatus}) {
   const [password, setPassword] = useState();
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if(loginStatus){
-      //window.location.href = window.location.href + 'app'
-    }
-  },[])
+ 
 
   useEffect(() => {
     const targetInput = passwordInputRef.current;
@@ -35,6 +31,7 @@ function Login({loginStatus, setLoginStatus}) {
     })
     .then(res => {
       if(res.data){
+        localStorage.setItem("loggedIn", "true")
         setLoginStatus(true)
         navigate('/app');
       }
