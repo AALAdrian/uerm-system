@@ -8,6 +8,7 @@ import Home from './Home';
 import Add from './Add'
 import Login from './Login';
 import ProtectedRoute from './ProtectedRoute';
+//import { useNavigate } from 'react-router-dom';
 
 function App() {
 
@@ -16,11 +17,19 @@ function App() {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
+    if(loginStatus){
+      window.location.href = window.location.href + 'app'
+      console.log("hello")
+    }
+  },[])
+
+  useEffect(() => {
     axios.get("/api/login").then((response) => {
       if (response.data.loggedIn == true) {
         //setRole(response.data.user[0].role);
         console.log("there is a logged in user", response.data.user)
         setLoginStatus(true)
+        console.log(loginStatus)
       }
       else{
         console.log("there is no logged in user")
@@ -49,6 +58,7 @@ function App() {
           <Route element={<ProtectedRoute loginStatus={loginStatus}/>}>
             <Route path='/app' element={<Home/>}/>
           </Route>
+          
         </Routes>
       </BrowserRouter>
     </div>

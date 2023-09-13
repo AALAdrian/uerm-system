@@ -4,13 +4,19 @@ import { useState, useRef} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Login({setLoginStatus}) {
+function Login({loginStatus, setLoginStatus}) {
 
   const [eyeIconToggle, setEyeIconToggle] = useState(false);
   const passwordInputRef = useRef();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if(loginStatus){
+      //window.location.href = window.location.href + 'app'
+    }
+  },[])
 
   useEffect(() => {
     const targetInput = passwordInputRef.current;

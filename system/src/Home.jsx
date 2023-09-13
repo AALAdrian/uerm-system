@@ -1,5 +1,5 @@
 import React, { useDebugValue, useEffect } from 'react'
-import {BrowserRouter} from 'react-router-dom'
+import {BrowserRouter, NavLink} from 'react-router-dom'
 import { useState, useRef } from 'react';
 import axios from 'axios';
 import './App.css'
@@ -50,7 +50,10 @@ function Home() {
 
 
 
-    
+    useEffect(() => {
+      //window.location.href = window.location.href + 'app'
+      console.log(window.location)
+    },[])
 
     useEffect(() => {
       axios.get(`/api/getData/${selectedOption}`)
@@ -69,6 +72,7 @@ function Home() {
 
     useEffect(() => {
       getIP();
+      console.log(window.location.url)
     },[])
     
 
@@ -138,7 +142,6 @@ const getIP = async () => {
     const ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
     const ipMatch = ice.candidate.candidate.match(ipRegex);
     const ip = ipMatch && ipMatch[1];
-    alert("this is your ip address",ip);
     console.log(ice.candidate.candidate)
     pc.onicecandidate = () => {};
   };
@@ -265,8 +268,38 @@ const getIP = async () => {
   return (
     <div>
 
+      
+
 <div className='home-container'>
 
+    <div className="app-nav">
+      <ul>
+        <li>
+        <NavLink
+          to="/app"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? "active" : ""
+          }
+        >
+          Home
+        </NavLink>
+        </li>   
+        <li>
+        <NavLink
+          to="/admin"
+          className={({ isActive, isPending }) =>
+            isPending ? "pending" : isActive ? "active" : ""
+          }
+        >
+          Admin
+        </NavLink>
+        </li>  
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </ul>
+    </div>
+
+  <div className="left-right-section-container">  
+  
     <div className='left-section'>
 
       <form onSubmit={(e) => {
@@ -398,6 +431,7 @@ const getIP = async () => {
 
     </form>
 
+  </div>
   </div>
             
 
