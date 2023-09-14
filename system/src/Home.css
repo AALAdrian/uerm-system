@@ -15,9 +15,13 @@
     display: flex;
 }
 
+
 .app-nav{
     flex-grow: 0;
     margin-bottom: 20px;
+    font-family: 'robotoMedium';
+    margin-top: 20px;
+    margin-right: 10px;
  }
 
 
@@ -127,6 +131,7 @@
     display: none;
     justify-content: center;
     align-items: center;
+    margin-top: -20px;
 }
 
 
@@ -213,6 +218,7 @@
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.37);
     padding-bottom: 50px;
+    margin-top: -20px;
 }
 
 .edit-popup-container h2{

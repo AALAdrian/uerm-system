@@ -3,6 +3,7 @@ import './Login.css'
 import { useState, useRef} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useStore from './globalStore';
 
 function Login({loginStatus, setLoginStatus}) {
 
@@ -10,6 +11,7 @@ function Login({loginStatus, setLoginStatus}) {
   const passwordInputRef = useRef();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const setRole = useStore(state => state.setRole)
   const navigate = useNavigate()
 
   
@@ -32,8 +34,10 @@ function Login({loginStatus, setLoginStatus}) {
     .then(res => {
       if(res.data){
         localStorage.setItem("loggedIn", "true")
-        setLoginStatus(true)
+        setLoginStatus(true);
         navigate('/app');
+        setRole(res.data.role);
+        localStorage.setItem('role', res.data.role);
       }
     })
     .catch(err => {

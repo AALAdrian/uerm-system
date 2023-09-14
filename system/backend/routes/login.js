@@ -23,7 +23,10 @@ const connection = mysql.createConnection({
            const response = await bcrypt.compare(password, result[0].password, (err, response) => {
                 if(response){
                     req.session.user = result;
-                    res.send(true);
+                    res.send({
+                      loggedIn: true,
+                      role: result[0].role
+                    });
                 }
                 else{
                     res.send(false);
