@@ -13,10 +13,17 @@ function App() {
 
   const [loginStatus, setLoginStatus] = useState(false)
   const [cookieChecker, setCookieChecker] = useState(false)
+
+  useEffect(() => {
+    // Check the initial login status when the app loads
+    const initialLoginStatus = localStorage.getItem('loggedIn') === 'true';
+    setLoginStatus(initialLoginStatus);
+  }, []);
+
   //const navigate = useNavigate()
   axios.defaults.withCredentials = true;
 
-  
+  console.log("logged in is " ,localStorage.getItem('loggedIn'))
 
   useEffect(() => {
     axios.get("/api/login").then((response) => {
@@ -29,6 +36,7 @@ function App() {
       else{
         console.log("there is no logged in user")
         setLoginStatus(false)
+        localStorage.setItem('loggedIn', 'false')
       }
     });
   },[cookieChecker]);
@@ -49,12 +57,20 @@ function App() {
     <div className='app-container'>
       <BrowserRouter>
         <Routes>
-          
-          <Route path='/' element={loginStatus ? <Navigate to='/app'/> : <Navigate to='/login'/>}/>
-          <Route path='login' element={<Login setLoginStatus={setLoginStatus}/>}/>
+
+        {
+          loginStatus ? (
+            <Route path="/" element={<Navigate to="/app" />} />
+          ) : (
+            <Route
+              path="/"
+              element={<Login setLoginStatus={setLoginStatus} />}
+            />
+          )
+        }
           
           <Route element={<ProtectedRoute loginStatus={loginStatus}/>}>
-            <Route path='/app' element={<Home/>}/>
+            <Route path='/app' element={<Home setLoginStatus={setLoginStatus}/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

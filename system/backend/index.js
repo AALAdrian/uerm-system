@@ -53,6 +53,10 @@ connection.connect(function(err) {
   app.use('/api', editRouter);
   app.use('/api',deleteRouter);
   app.use('/api/login', loginRouter)
+  app.get('/api/deleteCookie', (req,res) => {
+    res.clearCookie('userId', {httpOnly: true});
+    res.send('successfully cleared the data');
+  })
   app.use('/api', getDataByIdRouter);
   app.get('/api/getData/:department?', (req, res) => {
     const {department} = req.params

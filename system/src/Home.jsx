@@ -17,7 +17,7 @@ import xButton from './assets/x-button.png'
 import {internalIpV6, internalIpV4} from 'internal-ip';
 import os from 'os'
 
-function Home() {
+function Home({setLoginStatus}) {
 
     const [ipAddress, setIpAddress] = useState('');
     const [ip, setIp] = useState();
@@ -263,6 +263,15 @@ const getIP = async () => {
       setXToggle(!xToggle)
     }
 
+    function handleLogoutClick(e){
+      setLoginStatus(false);
+      localStorage.setItem('loggedIn', 'false')
+      axios.get('/api/deleteCookie')
+      .then(res => {
+        console.log(res.data)
+      })
+    }
+
   return (
     <div>
 
@@ -292,7 +301,7 @@ const getIP = async () => {
           Admin
         </NavLink>
         </li>  
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <i class="fa fa-sign-out" aria-hidden="true" onClick={handleLogoutClick}></i>
       </ul>
     </div>
 

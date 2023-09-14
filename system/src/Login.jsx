@@ -12,7 +12,7 @@ function Login({loginStatus, setLoginStatus}) {
   const [password, setPassword] = useState();
   const navigate = useNavigate()
 
- 
+  
 
   useEffect(() => {
     const targetInput = passwordInputRef.current;
