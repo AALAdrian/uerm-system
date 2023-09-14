@@ -394,10 +394,10 @@ function Home({ loginStatus, setLoginStatus }) {
                                 {row.cpu_serial_no}
                               </TableCell>
                               <TableCell align="center">
-                                {row.hostname}
+                                {row.remarks}
                               </TableCell>
                               <TableCell align="center">
-                                {row.remarks}
+                                {row.hostname}
                               </TableCell>
                               <TableCell align="center">{row.status}</TableCell>
                               <TableCell align="center">
