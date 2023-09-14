@@ -257,6 +257,7 @@ function Home({ loginStatus, setLoginStatus }) {
           alert(res.data);
           console.log(res.data);
           setXToggle(!xToggle);
+          setForceRender(forceRender + 1);
         }
       })
       .catch((err) => {
