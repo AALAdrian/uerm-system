@@ -51,6 +51,7 @@ function Home({ loginStatus, setLoginStatus }) {
   useEffect(() => {
     //window.location.href = window.location.href + 'app'\
     console.log(localStorage.getItem("role"));
+    
   }, []);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ function Home({ loginStatus, setLoginStatus }) {
 
   useEffect(() => {
     getIP();
+    
   }, []);
 
   useEffect(() => {
