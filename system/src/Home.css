@@ -22,6 +22,17 @@
     font-family: 'robotoMedium';
     margin-top: 20px;
     margin-right: 10px;
+    margin-bottom: 20px;
+ }
+
+ .app-nav .ip-logo{
+    width: 35px;
+    vertical-align: top;
+ }
+
+ .app-nav .ip-logo:hover{
+    transform: scale(1.2);
+    cursor: pointer;
  }
 
 
@@ -39,23 +50,33 @@
  }
 
 .app-nav ul{
+    width: 100%;
+    display: flex;
+    }
+
+.app-nav li{
+    list-style-type: none;
+    
+    font-size: 1.1rem;
     width: max-content;
-    margin-left: auto;
     margin-right: 30px;
 }
 
-.app-nav li{
-    display: inline-block;
-    margin-right: 30px;
-    font-size: 1.1rem;
+.app-nav ul .admin{
+    margin-left: auto;
+}
+
+.app-nav ul .home{
+    margin-left: 60px;
 }
 
 .fa-sign-out{
     font-size: 1.3rem;
+    margin-right: 20px;
 }
 
 .fa-sign-out:hover{
-    color: gray;
+    transform: scale(1.1);
     cursor: pointer;
 }
 
@@ -106,6 +127,7 @@
 
 .home-container .right-section{
     width: 75%;
+    position: relative;
 }
 
 .home-container input{
@@ -310,4 +332,42 @@
 .delete-confirmation-modal .buttons-container .confirm{
     background-color: rgb(255, 63, 63);
     color: white;
+}
+
+.fa-trash{
+    font-size: 1.05rem;
+    color: rgb(235, 13, 13);
+}
+
+.fa-trash:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.search-input{
+    width: 700px;
+    height: 40px;
+    margin-top: -72px;
+    margin-bottom: 32px;
+    vertical-align: top;
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(241, 235, 235);
+    padding: 5px;
+    padding-left: 50px;
+    outline: none;
+    font-size: 1rem;
+    transition: background-color 0.5s;
+}
+
+.fa-search{
+    position: absolute;
+    top: -65px;
+    left: 10px;
+    font-size: 1.5rem;
+}
+
+.search-input:focus{
+    background-color: white;
+    box-shadow: 2px 2px 5px rgb(190, 190, 190);
 }

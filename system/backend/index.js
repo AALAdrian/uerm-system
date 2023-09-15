@@ -10,6 +10,17 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const e = require('express');
+const ping = require('ping');
+
+const targetHost = '10.107.4.15'; // Replace with the target IP address
+
+ping.sys.probe(targetHost, (isAlive) => {
+  if (isAlive) {
+    console.log(`${targetHost} is online.`);
+  } else {
+    console.log(`${targetHost} is offline.`);
+  }
+});
 
 app.listen(3000,(err) => {
     if(err){
