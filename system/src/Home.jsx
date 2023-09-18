@@ -78,8 +78,8 @@ function Home({ loginStatus, setLoginStatus }) {
   }, []);
 
   useEffect(() => {
-    alert(page)
-  },[page])
+    alert(page);
+  }, [page]);
 
   useEffect(() => {
     const addPopup = addPopupRef.current;
@@ -153,12 +153,19 @@ function Home({ loginStatus, setLoginStatus }) {
   }, [deletePopupToggle]);
 
   useEffect(() => {
-    if(dummyIpList?.length < rowsPerPage){
-      for(let i=page; i<dummyIpList?.length; i++){
-        console.log(dummyIpList[i].ip_address)
+    console.log("this is line 156");
+      console.log("this is page : ",page );
+      console.log("this is rowsperpage", rowsPerPage)
+      const index = page * rowsPerPage;
+      const until = rowsPerPage * page + (dummyIpList?.length % 10);
+      console.log("for let i = ", index, "until", until)
+    
+      for (let i = page * rowsPerPage; i < rowsPerPage * page + (rowsPerPage < 5 ? dummyIpList?.length % 5 : rowsPerPage == 5 ? 5 : dummyIpList?.length % 10); i++) {
+        const ip = dummyIpList[i]?.ip_address;
+        axios.get('/api/getStatus',{})
       }
-    }
-  }, [dummyIpList]);
+    
+  }, [dummyIpList, rowsPerPage, page]);
 
   const getIP = async () => {
     const { RTCPeerConnection } = window;
@@ -443,7 +450,12 @@ function Home({ loginStatus, setLoginStatus }) {
                             <TableCell align="center">{row.remarks}</TableCell>
                             <TableCell align="center">{row.hostname}</TableCell>
                             <TableCell align="center">
-                              <i class={`fa fa-circle ${row.status =="on" ? "on" : "off"}`} aria-hidden="true"></i>
+                              <i
+                                class={`fa fa-circle ${
+                                  row.status == "on" ? "on" : "off"
+                                }`}
+                                aria-hidden="true"
+                              ></i>
                             </TableCell>
                             <TableCell align="center">
                               <div className="edit-delete-container">
