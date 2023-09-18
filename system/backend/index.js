@@ -97,4 +97,15 @@ connection.connect(function (err) {
       );
     }
   });
+
+  app.get('/api/getStatus/:ip',(req,res) => {
+    const {ip} = req.params;
+    ping.sys.probe(ip, (isAlive) => {
+      if (isAlive) {
+        connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["on",ip])
+      } else {
+        connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["off",ip])
+      }
+    });
+  })
 });
