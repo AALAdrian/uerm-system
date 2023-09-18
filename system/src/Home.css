@@ -367,6 +367,14 @@
     font-size: 1.5rem;
 }
 
+.on{
+    color: green;
+}
+
+.off{
+    color: red;
+}
+
 .search-input:focus{
     background-color: white;
     box-shadow: 2px 2px 5px rgb(190, 190, 190);

@@ -51,7 +51,6 @@ function Home({ loginStatus, setLoginStatus }) {
   useEffect(() => {
     //window.location.href = window.location.href + 'app'\
     console.log(localStorage.getItem("role"));
-    
   }, []);
 
   useEffect(() => {
@@ -71,8 +70,16 @@ function Home({ loginStatus, setLoginStatus }) {
 
   useEffect(() => {
     getIP();
-    
+    for (let i = 0; i < rowsPerPage; i++) {
+      if (dummyIpList?.length > 0) {
+        console.log(dummyIpList[i]);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    alert(page)
+  },[page])
 
   useEffect(() => {
     const addPopup = addPopupRef.current;
@@ -145,6 +152,14 @@ function Home({ loginStatus, setLoginStatus }) {
     }
   }, [deletePopupToggle]);
 
+  useEffect(() => {
+    if(dummyIpList?.length < rowsPerPage){
+      for(let i=page; i<dummyIpList?.length; i++){
+        console.log(dummyIpList[i].ip_address)
+      }
+    }
+  }, [dummyIpList]);
+
   const getIP = async () => {
     const { RTCPeerConnection } = window;
     const pc = new RTCPeerConnection({ iceServers: [] });
@@ -155,7 +170,6 @@ function Home({ loginStatus, setLoginStatus }) {
       const ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
       const ipMatch = ice.candidate.candidate.match(ipRegex);
       const ip = ipMatch && ipMatch[1];
-      console.log(ice.candidate.candidate);
       pc.onicecandidate = () => {};
     };
   };
@@ -367,7 +381,6 @@ function Home({ loginStatus, setLoginStatus }) {
               placeholder="Search IP Address"
               onChange={handleSearchInputChange}
             />
-            
 
             <Paper>
               <TableContainer>
@@ -429,7 +442,9 @@ function Home({ loginStatus, setLoginStatus }) {
                             </TableCell>
                             <TableCell align="center">{row.remarks}</TableCell>
                             <TableCell align="center">{row.hostname}</TableCell>
-                            <TableCell align="center">{row.status}</TableCell>
+                            <TableCell align="center">
+                              <i class={`fa fa-circle ${row.status =="on" ? "on" : "off"}`} aria-hidden="true"></i>
+                            </TableCell>
                             <TableCell align="center">
                               <div className="edit-delete-container">
                                 <button
