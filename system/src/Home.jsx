@@ -77,9 +77,7 @@ function Home({ loginStatus, setLoginStatus }) {
     }
   }, []);
 
-  useEffect(() => {
-    alert(page);
-  }, [page]);
+  
 
   useEffect(() => {
     const addPopup = addPopupRef.current;
@@ -162,7 +160,7 @@ function Home({ loginStatus, setLoginStatus }) {
     
       for (let i = page * rowsPerPage; i < rowsPerPage * page + (rowsPerPage < 5 ? dummyIpList?.length % 5 : rowsPerPage == 5 ? 5 : dummyIpList?.length % 10); i++) {
         const ip = dummyIpList[i]?.ip_address;
-        axios.get('/api/getStatus',{})
+        axios.get(`/api/getStatus/${ip}`);
       }
     
   }, [dummyIpList, rowsPerPage, page]);
@@ -575,6 +573,7 @@ function Home({ loginStatus, setLoginStatus }) {
               <input
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
+                placeholder="department"
               ></input>
 
               <label>Property Code</label>
@@ -582,30 +581,35 @@ function Home({ loginStatus, setLoginStatus }) {
                 value={propCode}
                 required
                 onChange={(e) => setPropCode(e.target.value)}
+                placeholder="property code"
               ></input>
 
               <label>Cpu Model</label>
               <input
                 value={cpuModel}
                 onChange={(e) => setCpuModel(e.target.value)}
+                placeholder="cpu model"
               ></input>
 
               <label>Cpu Serial Number</label>
               <input
                 value={serialNum}
                 onChange={(e) => setSerialNum(e.target.value)}
+                placeholder="cpu serial number"
               ></input>
 
               <label>Remarks</label>
               <input
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
+                placeholder="remarks"
               ></input>
 
               <label>Hostname</label>
               <input
                 value={hostname}
                 onChange={(e) => setHostname(e.target.value)}
+                placeholder="hostname"
               ></input>
 
               <button>Submit</button>

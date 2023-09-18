@@ -64,16 +64,7 @@ connection.connect(function (err) {
     res.send("successfully cleared the data");
   });
   app.use("/api", getDataByIdRouter);
-  app.get('/api/getStatus',(req,res) => {
-    const {ip} = req.body;
-    ping.sys.probe(ip, (isAlive) => {
-      if (isAlive) {
-        console.log(`${ip} is online.`);
-      } else {
-        console.log(`${ip} is offline.`);
-      }
-    });
-  })
+
   app.get("/api/getData/:department?", (req, res) => {
     const { department } = req.params;
     if (
@@ -103,4 +94,15 @@ connection.connect(function (err) {
       );
     }
   });
+
+  app.get('/api/getStatus/:ip',(req,res) => {
+    const {ip} = req.params;
+    ping.sys.probe(ip, (isAlive) => {
+      if (isAlive) {
+        connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["on",ip])
+      } else {
+        connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["off",ip])
+      }
+    });
+  })
 });
