@@ -6,6 +6,7 @@ const editRouter = require("./routes/edit.js");
 const loginRouter = require("./routes/login.js");
 const deleteRouter = require("./routes/delete.js");
 const getDataByIdRouter = require("./routes/getDataByIp.js");
+const getStatusRouter = require("./routes/")
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -54,15 +55,17 @@ connection.connect(function (err) {
 
   const sql =
     'INSERT INTO computer (ip_address, department, property_code, cpu_model, cpu_serial_no, remarks, hostname, status) VALUES("ipaddress_sample", "department_sample", "propertycode_sample", "cpumodel_sample", "cpuserial_num_sample", "remarks_sample", "hostname_sample", "status_sample")';
-
+  
   app.use("/api/add", addRouter);
   app.use("/api", editRouter);
   app.use("/api", deleteRouter);
+  
   app.use("/api/login", loginRouter);
   app.get("/api/deleteCookie", (req, res) => {
     res.clearCookie("userId", { httpOnly: true });
     res.send("successfully cleared the data");
   });
+  
   app.use("/api", getDataByIdRouter);
 
   app.get("/api/getData/:department?", (req, res) => {
@@ -94,15 +97,4 @@ connection.connect(function (err) {
       );
     }
   });
-
-  app.get('/api/getStatus/:ip',(req,res) => {
-    const {ip} = req.params;
-    ping.sys.probe(ip, (isAlive) => {
-      if (isAlive) {
-        connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["on",ip])
-      } else {
-        connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["off",ip])
-      }
-    });
-  })
 });
