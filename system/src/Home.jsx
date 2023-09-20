@@ -47,7 +47,7 @@ function Home({ loginStatus, setLoginStatus }) {
   const [deletePopupToggle, setDeletePopupToggle] = useState(false);
   const role = useStore((state) => state.role);
   const [checkBoxes, setCheckBoxes] = useState([]);
-  const [refreshStatus, setRefreshStatus] = useState(0)
+  const [refreshStatus, setRefreshStatus] = useState(0);
   const refreshStatusRef = useRef(false);
   const isSecondUseEffectRunning = useRef();
 
@@ -55,6 +55,10 @@ function Home({ loginStatus, setLoginStatus }) {
     //window.location.href = window.location.href + 'app'\
     console.log(localStorage.getItem("role"));
   }, []);
+
+  // async function fetchIpData(){
+
+  // }
 
   useEffect(() => {
     console.log("the first useeffect runs");
@@ -66,10 +70,11 @@ function Home({ loginStatus, setLoginStatus }) {
         const newIpList = res.data.filter((ip) =>
           ip.ip_address.includes(searchRef.current.value)
         );
-        setDummyIpList(newIpList);
+        setDummyIpList(newIpList);  
         setDataCount(Object.keys(newIpList).length);
       }
     });
+    console.log("i passed the axios.get inside the first use effect")
   }, [refreshStatus, selectedOption, forceRender]);
 
 
@@ -145,22 +150,21 @@ function Home({ loginStatus, setLoginStatus }) {
   }, [deletePopupToggle]);
 
   useEffect(() => {
-
-    
     console.log("this is page: ", page);
     console.log("this is rowsPerPage", rowsPerPage);
-    
-    const startIndex = page * rowsPerPage;
-    const endIndex = startIndex + Math.min(rowsPerPage, dummyIpList?.length - startIndex);
-  
-    const requests = dummyIpList?.slice(startIndex, endIndex).map((item) => axios.get(`/api/getStatus/${item?.ip_address}`));
 
-      console.log(requests)
-      
-      Promise.all(requests)
+    const startIndex = page * rowsPerPage;
+    const endIndex =
+      startIndex + Math.min(rowsPerPage, dummyIpList?.length - startIndex);
+
+    const requests = dummyIpList
+      ?.slice(startIndex, endIndex)
+      .map((item) => axios.get(`/api/getStatus/${item?.ip_address}`));
+
+
+    Promise.all(requests)
       .then((responses) => {
         // Process responses here if needed
-        console.log("Responses:", responses);
         console.log("i passed the setforcerender");
       })
       .catch((error) => {
@@ -171,7 +175,6 @@ function Home({ loginStatus, setLoginStatus }) {
   // useEffect(() => {
   //   setRefreshStatus((prev) => prev + 1);
   // });
-  
 
   function handleChangePage(event, newPage) {
     setPage(newPage);
@@ -443,9 +446,9 @@ function Home({ loginStatus, setLoginStatus }) {
                             <TableCell align="center">
                               <i
                                 class={`fa fa-circle ${
-                                  row.status == "on" ? "on" : "off"
+                                  row.status == "on" ? "on" : row.status == "off" ? "off" : null
                                 }`}
-                                aria-hidden="true"
+                                
                               ></i>
                             </TableCell>
                             <TableCell align="center">
