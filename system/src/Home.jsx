@@ -49,6 +49,7 @@ function Home({ loginStatus, setLoginStatus }) {
   const [checkBoxes, setCheckBoxes] = useState([]);
   const [refreshStatus, setRefreshStatus] = useState(0);
   const refreshStatusRef = useRef(false);
+  const [refreshStatus2, setRefreshStatus2] = useState(0);
   const isSecondUseEffectRunning = useRef();
 
   useEffect(() => {
@@ -170,7 +171,7 @@ function Home({ loginStatus, setLoginStatus }) {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [dummyIpList, refreshStatus, rowsPerPage, page]);
+  }, [dummyIpList, rowsPerPage, page]);
 
   // useEffect(() => {
   //   setRefreshStatus((prev) => prev + 1);
@@ -416,6 +417,7 @@ function Home({ loginStatus, setLoginStatus }) {
                           page * rowsPerPage + rowsPerPage
                         )
                         .map((row, index) => (
+                          
                           <TableRow key={row.ip_address}>
                             <TableCell align="center">
                               <input
@@ -445,11 +447,12 @@ function Home({ loginStatus, setLoginStatus }) {
                             <TableCell align="center">{row.hostname}</TableCell>
                             <TableCell align="center">
                               <i
-                                class={`fa fa-circle ${
-                                  row.status == "on" ? "on" : row.status == "off" ? "off" : null
-                                }`}
+                                className={`fa fa-circle ${
+                                  row?.status == 'on' ? 'on' : row.status == 'off' ? 'off' : "off"
+                                }`}   
                                 
                               ></i>
+
                             </TableCell>
                             <TableCell align="center">
                               <div className="edit-delete-container">
