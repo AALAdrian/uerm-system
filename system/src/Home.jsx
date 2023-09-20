@@ -47,6 +47,9 @@ function Home({ loginStatus, setLoginStatus }) {
   const [deletePopupToggle, setDeletePopupToggle] = useState(false);
   const role = useStore((state) => state.role);
   const [checkBoxes, setCheckBoxes] = useState([]);
+  const [refreshStatus, setRefreshStatus] = useState(0)
+  const refreshStatusRef = useRef(false);
+  const isSecondUseEffectRunning = useRef();
 
   useEffect(() => {
     //window.location.href = window.location.href + 'app'\
@@ -54,6 +57,7 @@ function Home({ loginStatus, setLoginStatus }) {
   }, []);
 
   useEffect(() => {
+    console.log("the first useeffect runs");
     axios.get(`/api/getData/${selectedOption}`).then((res) => {
       setIpList(res.data);
       setDummyIpList(res.data);
@@ -66,18 +70,8 @@ function Home({ loginStatus, setLoginStatus }) {
         setDataCount(Object.keys(newIpList).length);
       }
     });
-  }, [selectedOption, forceRender]);
+  }, [refreshStatus, selectedOption, forceRender]);
 
-  useEffect(() => {
-    getIP();
-    for (let i = 0; i < rowsPerPage; i++) {
-      if (dummyIpList?.length > 0) {
-        console.log(dummyIpList[i]);
-      }
-    }
-  }, []);
-
-  
 
   useEffect(() => {
     const addPopup = addPopupRef.current;
@@ -151,33 +145,33 @@ function Home({ loginStatus, setLoginStatus }) {
   }, [deletePopupToggle]);
 
   useEffect(() => {
-    console.log("this is line 156");
-      console.log("this is page : ",page );
-      console.log("this is rowsperpage", rowsPerPage)
-      const index = page * rowsPerPage;
-      const until = rowsPerPage * page + (dummyIpList?.length % 10);
-      console.log("for let i = ", index, "until", until)
-    
-      for (let i = page * rowsPerPage; i < rowsPerPage * page + (rowsPerPage < 5 ? dummyIpList?.length % 5 : rowsPerPage == 5 ? 5 : dummyIpList?.length % 10); i++) {
-        const ip = dummyIpList[i]?.ip_address;
-        axios.get(`/api/getStatus/${ip}`);
-      }
-    
-  }, [dummyIpList, rowsPerPage, page]);
 
-  const getIP = async () => {
-    const { RTCPeerConnection } = window;
-    const pc = new RTCPeerConnection({ iceServers: [] });
-    pc.createDataChannel("");
-    pc.createOffer().then(pc.setLocalDescription.bind(pc));
-    pc.onicecandidate = (ice) => {
-      if (!ice || !ice.candidate || !ice.candidate.candidate) return;
-      const ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
-      const ipMatch = ice.candidate.candidate.match(ipRegex);
-      const ip = ipMatch && ipMatch[1];
-      pc.onicecandidate = () => {};
-    };
-  };
+    
+    console.log("this is page: ", page);
+    console.log("this is rowsPerPage", rowsPerPage);
+    
+    const startIndex = page * rowsPerPage;
+    const endIndex = startIndex + Math.min(rowsPerPage, dummyIpList?.length - startIndex);
+  
+    const requests = dummyIpList?.slice(startIndex, endIndex).map((item) => axios.get(`/api/getStatus/${item?.ip_address}`));
+
+      console.log(requests)
+      
+      Promise.all(requests)
+      .then((responses) => {
+        // Process responses here if needed
+        console.log("Responses:", responses);
+        console.log("i passed the setforcerender");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, [dummyIpList, refreshStatus, rowsPerPage, page]);
+
+  // useEffect(() => {
+  //   setRefreshStatus((prev) => prev + 1);
+  // });
+  
 
   function handleChangePage(event, newPage) {
     setPage(newPage);
@@ -245,9 +239,8 @@ function Home({ loginStatus, setLoginStatus }) {
         hostname,
       })
       .then((res) => {
-        console.log(res);
         setEditToggle(!editToggle);
-        setForceRender(forceRender + 1);
+        setRefreshStatus(refreshStatus + 1);
       })
       .catch((err) => {
         console.log(err);

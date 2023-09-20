@@ -1,39 +1,56 @@
 const express = require('express');
 const router = express.Router()
 const mysql = require('mysql')
+const ping = require('ping')
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user     : 'user',
-    password : 'uerm',
-    database: 'patrick db'
-  });
+const pool = mysql.createPool({
+  host: "localhost",
+  user: "user",
+  password: "uerm",
+  database: "patrick db",
+});
 
-
-
-router.get("/api/getStatus/:ip", (req, res) => {
+router.get("/getStatus/:ip", async (req, res) => {
+  try {
     const { ip } = req.params;
-    console.log(ip);
+    
+    const isAlive = await pingHost(ip); // Assuming you have a function to ping the host
+    
+    const status = isAlive ? "on" : "off";
+
+    await updateStatusInDatabase(ip, status);
+
+    res.json({ message: `Status updated to ${status}` });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+async function pingHost(ip) {
+  return new Promise((resolve) => {
     ping.sys.probe(ip, (isAlive) => {
-      if (isAlive) {
-        connection.query(
-          "UPDATE computer SET status = ? WHERE ip_address = ?",
-          ["on", ip],
-          (err, result) => {
-            if (err) {
-              console.log("this is the error", err);
-            }
-            console.log("this is the result", result);
-          }
-        );
-      } else {
-        connection.query(
-          "UPDATE computer SET status = ? WHERE ip_address = ?",
-          ["off", ip]
-        );
-      }
+      resolve(isAlive);
     });
   });
+}
+
+async function updateStatusInDatabase(ip, status) {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      "UPDATE computer SET status = ? WHERE ip_address = ?",
+      [status, ip],
+      (err, result) => {
+        if (err) {
+          console.error("Database error:", err);
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+}
 
 
-  module.exports = router;
+module.exports = router;

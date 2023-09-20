@@ -6,7 +6,7 @@ const editRouter = require("./routes/edit.js");
 const loginRouter = require("./routes/login.js");
 const deleteRouter = require("./routes/delete.js");
 const getDataByIdRouter = require("./routes/getDataByIp.js");
-const getStatusRouter = require("./routes/")
+const getStatusRouter = require("./routes/getStatus.js")
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -59,7 +59,7 @@ connection.connect(function (err) {
   app.use("/api/add", addRouter);
   app.use("/api", editRouter);
   app.use("/api", deleteRouter);
-  
+  app.use("/api/",getStatusRouter);
   app.use("/api/login", loginRouter);
   app.get("/api/deleteCookie", (req, res) => {
     res.clearCookie("userId", { httpOnly: true });
@@ -98,14 +98,14 @@ connection.connect(function (err) {
     }
   });
 
-  app.get('/api/getStatus/:ip',(req,res) => {
-    const {ip} = req.params;
-    ping.sys.probe(ip, (isAlive) => {
-      if (isAlive) {
-        connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["on",ip])
-      } else {
-        connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["off",ip])
-      }
-    });
-  })
+  // app.get('/api/getStatus/:ip',(req,res) => {
+  //   const {ip} = req.params;
+  //   ping.sys.probe(ip, (isAlive) => {
+  //     if (isAlive) {
+  //       connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["on",ip])
+  //     } else {
+  //       connection.query('UPDATE computer SET status = ? WHERE ip_address = ?',["off",ip])
+  //     }
+  //   });
+  // })
 });

@@ -41,30 +41,30 @@ function App() {
 
   console.log("logged in is ", localStorage.getItem("loggedIn"));
 
-  useEffect(() => {
-    axios.get("/api/login").then((response) => {
-      if (response.data.loggedIn == true) {
-        //setRole(response.data.user[0].role);
-        console.log("there is a logged in user", response.data.user);
-        setLoginStatus(true);
-        console.log(loginStatus);
-      } else {
-        console.log("there is no logged in user");
-        setLoginStatus(false);
-        localStorage.setItem("loggedIn", "false");
-      }
-    });
-  }, [cookieChecker]);
+  // useEffect(() => {
+  //   axios.get("/api/login").then((response) => {
+  //     if (response.data.loggedIn == true) {
+  //       //setRole(response.data.user[0].role);
+  //       console.log("there is a logged in user", response.data.user);
+  //       setLoginStatus(true);
+  //       console.log(loginStatus);
+  //     } else {
+  //       console.log("there is no logged in user");
+  //       setLoginStatus(false);
+  //       localStorage.setItem("loggedIn", "false");
+  //     }
+  //   });
+  // }, [cookieChecker]);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCookieChecker(!cookieChecker);
-    }, 5000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setCookieChecker(!cookieChecker);
+  //   }, 5000);
 
-    return () => {
-      clearInterval(intervalId); // Clear the interval when the component unmounts
-    };
-  }, [cookieChecker]);
+  //   return () => {
+  //     clearInterval(intervalId); // Clear the interval when the component unmounts
+  //   };
+  // }, [cookieChecker]);
 
   return (
     <div className="app-container">
