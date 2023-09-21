@@ -52,32 +52,64 @@ function Home({ loginStatus, setLoginStatus }) {
   const [refreshStatus2, setRefreshStatus2] = useState(0);
   const isSecondUseEffectRunning = useRef();
 
+  async function setStatus() {
+    const { data } = await axios.get(`/api/getData/${selectedOption}`);
+    console.log(data);
+    const startIndex = page * rowsPerPage;
+    const endIndex =
+      startIndex + Math.min(rowsPerPage, data?.length - startIndex);
+
+    const requests = data
+      ?.slice(startIndex, endIndex)
+      .map((item) => axios.get(`/api/getStatus/${item?.ip_address}`));
+    console.log(requests);
+
+    Promise.all(requests)
+      .then((responses) => {
+        // Process responses here if needed
+        console.log(responses[0]?.data);
+        setForceRender(forceRender + 1);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
   useEffect(() => {
     //window.location.href = window.location.href + 'app'\
     console.log(localStorage.getItem("role"));
   }, []);
 
-  // async function fetchIpData(){
+  //call api and ping the api on the backend and set the status .
+  useEffect(() => {
+    const internalID = setInterval(() => {
+      setStatus();
+    },5000)
 
-  // }
+    return () => {
+      clearInterval(internalID);
+    }
+    
+  }, [refreshStatus, rowsPerPage, page]);
 
   useEffect(() => {
     console.log("the first useeffect runs");
     axios.get(`/api/getData/${selectedOption}`).then((res) => {
       setIpList(res.data);
       setDummyIpList(res.data);
+      const startIndex = page * rowsPerPage;
+
       setDataCount(Object.keys(res.data).length);
       if (ipList != null || dummyIpList != null) {
         const newIpList = res.data.filter((ip) =>
           ip.ip_address.includes(searchRef.current.value)
         );
-        setDummyIpList(newIpList);  
+        setDummyIpList(newIpList);
         setDataCount(Object.keys(newIpList).length);
       }
     });
-    console.log("i passed the axios.get inside the first use effect")
+    console.log("i passed the axios.get inside the first use effect");
   }, [refreshStatus, selectedOption, forceRender]);
-
 
   useEffect(() => {
     const addPopup = addPopupRef.current;
@@ -149,29 +181,6 @@ function Home({ loginStatus, setLoginStatus }) {
       deletePopup.style.display = "none";
     }
   }, [deletePopupToggle]);
-
-  useEffect(() => {
-    console.log("this is page: ", page);
-    console.log("this is rowsPerPage", rowsPerPage);
-
-    const startIndex = page * rowsPerPage;
-    const endIndex =
-      startIndex + Math.min(rowsPerPage, dummyIpList?.length - startIndex);
-
-    const requests = dummyIpList
-      ?.slice(startIndex, endIndex)
-      .map((item) => axios.get(`/api/getStatus/${item?.ip_address}`));
-
-
-    Promise.all(requests)
-      .then((responses) => {
-        // Process responses here if needed
-        console.log("i passed the setforcerender");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, [dummyIpList, rowsPerPage, page]);
 
   // useEffect(() => {
   //   setRefreshStatus((prev) => prev + 1);
@@ -417,7 +426,6 @@ function Home({ loginStatus, setLoginStatus }) {
                           page * rowsPerPage + rowsPerPage
                         )
                         .map((row, index) => (
-                          
                           <TableRow key={row.ip_address}>
                             <TableCell align="center">
                               <input
@@ -448,11 +456,13 @@ function Home({ loginStatus, setLoginStatus }) {
                             <TableCell align="center">
                               <i
                                 className={`fa fa-circle ${
-                                  row?.status == 'on' ? 'on' : row.status == 'off' ? 'off' : "off"
-                                }`}   
-                                
+                                  row?.status == "on"
+                                    ? "on"
+                                    : row.status == "off"
+                                    ? "off"
+                                    : "off"
+                                }`}
                               ></i>
-
                             </TableCell>
                             <TableCell align="center">
                               <div className="edit-delete-container">
