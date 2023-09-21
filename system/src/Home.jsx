@@ -82,13 +82,7 @@ function Home({ loginStatus, setLoginStatus }) {
 
   //call api and ping the api on the backend and set the status .
   useEffect(() => {
-    const internalID = setInterval(() => {
-      setStatus();
-    },5000)
-
-    return () => {
-      clearInterval(internalID);
-    }
+    setStatus();
     
   }, [refreshStatus, rowsPerPage, page]);
 

@@ -16,6 +16,9 @@ const apiKey = "F43B3C25E0031E174968BE63A7C70F04";
 const axios = require("axios");
 
 const targetHost = "10.107.0.5"; // Replace with the target IP address
+ping.sys.probe('10.107.4.15', (isAlive) => {
+  console.log(isAlive)
+});
 
 app.listen(3000, (err) => {
   if (err) {
