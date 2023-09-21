@@ -76,7 +76,7 @@
 }
 
 .fa-sign-out:hover{
-    transform: scale(1.1);
+    transform: scale(1.1) ;
     cursor: pointer;
 }
 
@@ -140,6 +140,16 @@
 
 .home-container .left-section form{
     display: flex;
+}
+
+.fa-refresh{
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.fa-refresh:hover{
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .add-container{

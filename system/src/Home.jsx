@@ -83,7 +83,6 @@ function Home({ loginStatus, setLoginStatus }) {
   //call api and ping the api on the backend and set the status .
   useEffect(() => {
     setStatus();
-    
   }, [refreshStatus, rowsPerPage, page]);
 
   useEffect(() => {
@@ -195,6 +194,9 @@ function Home({ loginStatus, setLoginStatus }) {
       console.log(res);
       setDeletePopupToggle(!deletePopupToggle);
       setForceRender(forceRender + 1);
+      if (checkBoxes.includes(selectedIp)) {
+        setCheckBoxes(checkBoxes.filter((ip) => ip != selectedIp));
+      }
     });
   }
 
@@ -401,6 +403,10 @@ function Home({ loginStatus, setLoginStatus }) {
                         ></i>
                       )}
                     </TableCell>
+                    <TableCell align="center">
+                      Status
+                      <i class="fa fa-refresh" aria-hidden="true"></i>
+                    </TableCell>
                     <TableCell align="center">Ip Address</TableCell>
                     <TableCell align="center">Department</TableCell>
                     <TableCell align="center">Property Code</TableCell>
@@ -408,7 +414,7 @@ function Home({ loginStatus, setLoginStatus }) {
                     <TableCell align="center">Cpu Serial Num</TableCell>
                     <TableCell align="center">Remarks</TableCell>
                     <TableCell align="center">Hostname</TableCell>
-                    <TableCell align="center">Status</TableCell>
+
                     <TableCell align="center">Action</TableCell>
                   </TableHead>
                   <TableBody>
@@ -431,6 +437,17 @@ function Home({ loginStatus, setLoginStatus }) {
                               />
                             </TableCell>
                             <TableCell align="center">
+                              <i
+                                className={`fa fa-circle ${
+                                  row?.status == "on"
+                                    ? "on"
+                                    : row.status == "off"
+                                    ? "off"
+                                    : "off"
+                                }`}
+                              ></i>
+                            </TableCell>
+                            <TableCell align="center">
                               {row.ip_address}
                             </TableCell>
                             <TableCell align="center">
@@ -447,17 +464,7 @@ function Home({ loginStatus, setLoginStatus }) {
                             </TableCell>
                             <TableCell align="center">{row.remarks}</TableCell>
                             <TableCell align="center">{row.hostname}</TableCell>
-                            <TableCell align="center">
-                              <i
-                                className={`fa fa-circle ${
-                                  row?.status == "on"
-                                    ? "on"
-                                    : row.status == "off"
-                                    ? "off"
-                                    : "off"
-                                }`}
-                              ></i>
-                            </TableCell>
+
                             <TableCell align="center">
                               <div className="edit-delete-container">
                                 <button
