@@ -345,7 +345,7 @@
 
 .fa-trash{
     font-size: 1.05rem;
-    color: rgb(235, 13, 13);
+    color: rgba(255, 255, 255, 0);
 }
 
 .fa-trash:hover{
@@ -387,4 +387,29 @@
 .search-input:focus{
     background-color: white;
     box-shadow: 2px 2px 5px rgb(190, 190, 190);
+}
+
+.edit-delete-container .fa-pencil , .edit-delete-container .fa-trash{
+    margin-right: 10px;
+    transition: all 150ms ease-in-out;
+}
+
+.edit-delete-container .fa-pencil{
+    color: #ffffff;
+}
+
+.edit-delete-container .fa-pencil:hover{
+    color: rgb(84, 84, 150);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.tableRow:hover  .edit-delete-container .fa-pencil{
+    color: rgb(84, 84, 150);
+    transform: scale(1.2);
+}
+
+.tableRow:hover  .edit-delete-container .fa-trash{
+    color: rgb(255, 66, 66);
+    transform: scale(1.2);
 }

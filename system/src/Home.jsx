@@ -426,7 +426,11 @@ function Home({ loginStatus, setLoginStatus }) {
                           page * rowsPerPage + rowsPerPage
                         )
                         .map((row, index) => (
-                          <TableRow key={row.ip_address}>
+                          <TableRow
+                            className="tableRow"
+                            key={row.ip_address}
+                            on={() => alert("this is a row in a table")}
+                          >
                             <TableCell align="center">
                               <input
                                 type="checkbox"
@@ -467,23 +471,21 @@ function Home({ loginStatus, setLoginStatus }) {
 
                             <TableCell align="center">
                               <div className="edit-delete-container">
-                                <button
+                                <i
+                                  class="fa fa-pencil"
+                                  aria-hidden="true"
                                   onClick={handleEditButton}
                                   data-ip={row.ip_address}
-                                  className="edit-button"
-                                >
-                                  Edit
-                                </button>
-                                <button
-                                  className="delete-button"
+                                ></i>
+                                <i
+                                  class="fa fa-trash"
+                                  aria-hidden="true"
                                   data-ip={row.ip_address}
                                   onClick={(e) => {
                                     setDeletePopupToggle(!deletePopupToggle);
                                     setSelectedIp(e.target.dataset.ip);
                                   }}
-                                >
-                                  Delete
-                                </button>
+                                ></i>
                               </div>
                             </TableCell>
                           </TableRow>
