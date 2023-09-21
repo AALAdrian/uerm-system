@@ -343,9 +343,10 @@
     color: white;
 }
 
-.fa-trash{
+.tableHead .fa-trash{
     font-size: 1.05rem;
-    color: rgba(255, 255, 255, 0);
+    color: rgb(0, 0, 0);
+
 }
 
 .fa-trash:hover{
@@ -371,9 +372,9 @@
 
 .fa-search{
     position: absolute;
-    top: -65px;
-    left: 10px;
     font-size: 1.5rem;
+    top: 10px;
+    left: 200px;
 }
 
 .on{
@@ -384,24 +385,36 @@
     color: red;
 }
 
+.tableRow{
+    position: relative;
+}
+
 .search-input:focus{
     background-color: white;
     box-shadow: 2px 2px 5px rgb(190, 190, 190);
 }
 
 .edit-delete-container .fa-pencil , .edit-delete-container .fa-trash{
-    margin-right: 10px;
-    transition: all 150ms ease-in-out;
+    margin-right: 15px;
+    transition: all 75ms ease-in-out;
 }
 
 .edit-delete-container .fa-pencil{
-    color: #ffffff;
+    color: #ffffff00 ;
+}
+
+.edit-delete-container .fa-trash{
+    color: #ffffff00 ;
 }
 
 .edit-delete-container .fa-pencil:hover{
     color: rgb(84, 84, 150);
     transform: scale(1.2);
     cursor: pointer;
+}
+
+.tableRow:hover .hostname span{
+    display: none;
 }
 
 .tableRow:hover  .edit-delete-container .fa-pencil{
@@ -412,4 +425,15 @@
 .tableRow:hover  .edit-delete-container .fa-trash{
     color: rgb(255, 66, 66);
     transform: scale(1.2);
+}
+
+.edit-delete-container{
+    position: absolute;
+    right: 40px;
+    top: 15px;
+}
+
+.left-right-section-container{
+    display: flex;
+    justify-content: center;
 }

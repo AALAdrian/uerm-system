@@ -352,31 +352,7 @@ function Home({ loginStatus, setLoginStatus }) {
     <div>
       <div className="home-container">
         <div className="left-right-section-container">
-          <div className="left-section">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const newIpList = ipList.filter((ip) =>
-                  ip.ip_address.includes(searchRef.current.value)
-                );
-                setDummyIpList(newIpList);
-              }}
-            >
-              <select
-                value={selectedOption}
-                onChange={(e) => setSelectedOption(e.target.value)}
-              >
-                <option value="" defaultValue={true} disabled>
-                  departments
-                </option>
-                <option value="all">all</option>
-                <option value="engineering">engineering</option>
-                <option value="it">it</option>
-              </select>
-
-              <button onClick={handleAddClick}>ADD</button>
-            </form>
-          </div>
+          
 
           <div className="right-section">
             <i class="fa fa-search" aria-hidden="true"></i>
@@ -392,12 +368,12 @@ function Home({ loginStatus, setLoginStatus }) {
             <Paper>
               <TableContainer>
                 <Table>
-                  <TableHead>
+                  <TableHead className="tableHead">
                     {/* Table header content */}
                     <TableCell align="center">
                       {checkBoxes.length > 0 && (
                         <i
-                          class="fa fa-trash"
+                          className="fa fa-trash"
                           aria-hidden="true"
                           onClick={handleMultiSelectDelete}
                         ></i>
@@ -415,7 +391,7 @@ function Home({ loginStatus, setLoginStatus }) {
                     <TableCell align="center">Remarks</TableCell>
                     <TableCell align="center">Hostname</TableCell>
 
-                    <TableCell align="center">Action</TableCell>
+                    
                   </TableHead>
                   <TableBody>
                     {/* Render rows based on current page and rowsPerPage */}
@@ -467,10 +443,8 @@ function Home({ loginStatus, setLoginStatus }) {
                               {row.cpu_serial_no}
                             </TableCell>
                             <TableCell align="center">{row.remarks}</TableCell>
-                            <TableCell align="center">{row.hostname}</TableCell>
-
-                            <TableCell align="center">
-                              <div className="edit-delete-container">
+                            <TableCell align="center" className="hostname"><span>{row.hostname}</span></TableCell>
+                            <div className="edit-delete-container">
                                 <i
                                   class="fa fa-pencil"
                                   aria-hidden="true"
@@ -478,7 +452,7 @@ function Home({ loginStatus, setLoginStatus }) {
                                   data-ip={row.ip_address}
                                 ></i>
                                 <i
-                                  class="fa fa-trash"
+                                  className="fa fa-trash"
                                   aria-hidden="true"
                                   data-ip={row.ip_address}
                                   onClick={(e) => {
@@ -487,7 +461,6 @@ function Home({ loginStatus, setLoginStatus }) {
                                   }}
                                 ></i>
                               </div>
-                            </TableCell>
                           </TableRow>
                         ))}
                   </TableBody>
