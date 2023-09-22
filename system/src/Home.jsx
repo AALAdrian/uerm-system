@@ -352,9 +352,32 @@ function Home({ loginStatus, setLoginStatus }) {
     <div>
       <div className="home-container">
         <div className="left-right-section-container">
-          
-
           <div className="right-section">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const newIpList = ipList.filter((ip) =>
+                  ip.ip_address.includes(searchRef.current.value)
+                );
+                setDummyIpList(newIpList);
+              }}
+              className="search-form"
+            >
+              <select
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
+                className="department-dropdown"
+              >
+                <option value="" defaultValue={true} disabled>
+                  departments
+                </option>
+                <option value="all">all</option>
+                <option value="engineering">engineering</option>
+                <option value="it">it</option>
+              </select>
+
+              
+            </form>
             <i class="fa fa-search" aria-hidden="true"></i>
             <input
               className="search-input"
@@ -390,8 +413,6 @@ function Home({ loginStatus, setLoginStatus }) {
                     <TableCell align="center">Cpu Serial Num</TableCell>
                     <TableCell align="center">Remarks</TableCell>
                     <TableCell align="center">Hostname</TableCell>
-
-                    
                   </TableHead>
                   <TableBody>
                     {/* Render rows based on current page and rowsPerPage */}
@@ -443,24 +464,26 @@ function Home({ loginStatus, setLoginStatus }) {
                               {row.cpu_serial_no}
                             </TableCell>
                             <TableCell align="center">{row.remarks}</TableCell>
-                            <TableCell align="center" className="hostname"><span>{row.hostname}</span></TableCell>
+                            <TableCell align="center" className="hostname">
+                              <span>{row.hostname}</span>
+                            </TableCell>
                             <div className="edit-delete-container">
-                                <i
-                                  class="fa fa-pencil"
-                                  aria-hidden="true"
-                                  onClick={handleEditButton}
-                                  data-ip={row.ip_address}
-                                ></i>
-                                <i
-                                  className="fa fa-trash"
-                                  aria-hidden="true"
-                                  data-ip={row.ip_address}
-                                  onClick={(e) => {
-                                    setDeletePopupToggle(!deletePopupToggle);
-                                    setSelectedIp(e.target.dataset.ip);
-                                  }}
-                                ></i>
-                              </div>
+                              <i
+                                class="fa fa-pencil"
+                                aria-hidden="true"
+                                onClick={handleEditButton}
+                                data-ip={row.ip_address}
+                              ></i>
+                              <i
+                                className="fa fa-trash"
+                                aria-hidden="true"
+                                data-ip={row.ip_address}
+                                onClick={(e) => {
+                                  setDeletePopupToggle(!deletePopupToggle);
+                                  setSelectedIp(e.target.dataset.ip);
+                                }}
+                              ></i>
+                            </div>
                           </TableRow>
                         ))}
                   </TableBody>

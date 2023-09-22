@@ -437,3 +437,10 @@
     display: flex;
     justify-content: center;
 }
+
+.department-dropdown{
+    position: absolute;
+    top: 0px;
+    border: none;
+    background-color: transparent;
+}

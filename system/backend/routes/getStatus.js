@@ -30,6 +30,7 @@ router.get("/getStatus/:ip", async (req, res) => {
 async function pingHost(ip) {
   return new Promise((resolve) => {
     ping.sys.probe(ip, (isAlive) => {
+      console.log(ip + ' is ' + isAlive)
       resolve(isAlive);
     });
   });
